@@ -1,0 +1,13 @@
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+      "type": "dll",
+      "exe": "",
+      "project": "CMakeLists.txt",
+      "projectTarget": "kmint.dll (Install) (lib\\kmint.dll)",
+      "name": "kmint.dll (Install) (lib\\kmint.dll)"
+    }
+  ]
+}

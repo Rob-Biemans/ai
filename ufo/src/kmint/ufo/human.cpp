@@ -10,7 +10,12 @@ constexpr char const *image_path = "resources/human.png";
 graphics::image human_image() { return graphics::image{image_path}; }
 
 math::vector2d random_location() {
-  return {random_scalar(60, 900), random_scalar(60, 700)};
+
+  //prevent from spawning in/ontop buildings
+	float random_x = random_scalar(60, 900);
+	float random_y = random_scalar(60, 700);
+
+  return { random_x, random_y };
 }
 
 } // namespace

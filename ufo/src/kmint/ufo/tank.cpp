@@ -2,6 +2,7 @@
 #include "kmint/graphics.hpp"
 #include "kmint/ufo/node_algorithm.hpp"
 #include "kmint/random.hpp"
+#include "kmint/ufo/human.hpp"
 #include <iostream>
 
 namespace kmint::ufo {
@@ -36,8 +37,24 @@ void tank::act(delta_time dt) {
 	// laat ook zien wat hij ziet
 	for (auto i = begin_perceived(); i != end_perceived(); ++i) {
 		auto const& a = *i;
+		//std::cout << &a == saucer_;
 		//std::cout << "Saw something at " << a.location().x() << ", "
 		//	<< a.location().y() << "\n";
+	}
+
+	// *Red Tank overran human
+	for (std::size_t ix{}; ix < num_colliding_actors(); ++ix) {
+		auto &other = colliding_actor(ix);
+		if (dynamic_cast<human *>(&other) && this->type_ != tank_type::green) {
+			std::cout << "Red tank overran human\n";
+			other.remove();
+		}
+
+		if (dynamic_cast<human *>(&other) && this->type_ != tank_type::red) {
+			this->amount_of_saved_humans += 1;
+			std::cout << "Green tank put human inside, and saved intotal "<< this->amount_of_saved_humans << "\n";
+			other.remove();
+		}
 	}
 }
 

@@ -1,5 +1,6 @@
 #include "kmint/ufo/saucer.hpp"
 #include "kmint/ufo/human.hpp"
+#include "kmint/random.hpp"
 #include <string>
 #include <iostream>
 
@@ -21,17 +22,24 @@ char const *color_for(saucer_type type) {
   }
 }
 
+math::vector2d random_location() {
+	float random_x = random_scalar(60, 900);
+	float random_y = random_scalar(60, 700);
+
+	return { random_x, random_y };
+}
+
 math::vector2d location_for(saucer_type type) {
   switch (type) {
   case saucer_type::blue:
-    return {30.f, 30.f};
+	return random_location();//{30.f, 30.f};
   case saucer_type::green:
-    return {994.f, 30.f};
+    return {430.f, 630.f}; //886, 137
   case saucer_type::beige:
-    return {994.f, 738.f};
+    return random_location();//{994.f, 738.f};
   case saucer_type::yellow:
   default:
-    return {30.f, 738.f};
+    return random_location();//{30.f, 738.f};
   }
 }
 
@@ -65,6 +73,11 @@ saucer::saucer(saucer_type type)
 
 void saucer::act(delta_time dt) {
   location(location() + v_ * to_seconds(dt));
+
+  if (saucer_type::green == this->type_) {
+	  std::cout << "location: " << location() << "\n";
+  }
+  
   for (std::size_t ix{}; ix < num_colliding_actors(); ++ix) {
     auto &other = colliding_actor(ix);
     if (dynamic_cast<human *>(&other)) {

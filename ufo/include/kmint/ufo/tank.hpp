@@ -31,6 +31,7 @@ private:
   play::image_drawable drawable_;
   delta_time t_since_move_{};
   tank_type type_;
+  int amount_of_saved_humans = 0;
 };
 
 } // namespace ufo

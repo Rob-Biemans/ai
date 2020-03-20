@@ -1,0 +1,32 @@
+~ betekent klaar
+
+::Algemeen::
+
+::Human::
+
+=Gedrag= 
+Bewegen zich vrij rond, maar kunnen niet door of over gebouwen heen en niet aan rand van scherm.
+
+
+::Tanks::
+
+=Gedrag=
+~Rode tank rijdt mensen dood
+~Groene tank neemt mensen mee (ook als iets met tank gebeurt)
+
+Als beide een ufo ziet (200 pixels vandaan) gaan ze drie dingen doen (zie opdr)
+
+Indien tank 100 schadepunten heeft, moet die naar andre gaan
+
+::UFO::
+
+=Gedrag=
+Niet buiten randen van speeldveld
+~Starten willekeurig op een plek
+Dwalen door stad, tot een mens tegenkomt en die gaat volgen tot hij gevangen is of een tank ziet. Indien een tank ziet, zal hij die volgen
+
+
+::Andre::
+
+=Gedrag=
+Begint op type 1 en eindigt op 4, vervolgens weer bij 1 etc.
