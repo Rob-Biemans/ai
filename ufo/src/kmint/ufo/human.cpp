@@ -12,8 +12,33 @@ graphics::image human_image() { return graphics::image{image_path}; }
 math::vector2d random_location() {
 
   //prevent from spawning in/ontop buildings
-	float random_x = random_scalar(60, 900);
-	float random_y = random_scalar(60, 700);
+	float random_x = random_scalar(60, 900);//900
+	float random_y = random_scalar(60, 700);//700
+
+	if (random_x >= 575 && random_x <= 735 | random_y >= 60 && random_y <= 137) {
+		random_x = random_scalar(745, 900);
+		random_y = random_scalar(137, 700);
+	}
+
+	if (random_x >= 575 && random_x <= 665 | random_y >= 200 && random_y <= 310) {
+		random_x = random_scalar(60, 570);
+		random_y = random_scalar(310, 700);
+	}
+
+	if (random_x >= 575 && random_x <= 685 | random_y >= 400 && random_y <= 490) {
+		random_x = random_scalar(60, 570);
+		random_y = random_scalar(490, 700);
+	}
+
+	if (random_x >= 320 && random_x <= 440 | random_y >= 500 && random_y <= 630) {
+		random_x = random_scalar(440, 900);
+		random_y = random_scalar(130, 700);
+	}
+
+	if (random_x >= 430 && random_x <= 510 | random_y >= 460 && random_y <= 610) {
+		random_x = random_scalar(500, 900);
+		random_y = random_scalar(620, 700);
+	}
 
   return { random_x, random_y };
 }

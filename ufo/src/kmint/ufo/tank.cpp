@@ -52,7 +52,7 @@ void tank::act(delta_time dt) {
 
 		if (dynamic_cast<human *>(&other) && this->type_ != tank_type::red) {
 			this->amount_of_saved_humans += 1;
-			std::cout << "Green tank put human inside, and saved intotal "<< this->amount_of_saved_humans << "\n";
+			std::cout << "Green tank put human inside, and saved intotal " << this->amount_of_saved_humans << "\n";
 			other.remove();
 		}
 	}

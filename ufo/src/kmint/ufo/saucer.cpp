@@ -34,7 +34,7 @@ math::vector2d location_for(saucer_type type) {
   case saucer_type::blue:
 	return random_location();//{30.f, 30.f};
   case saucer_type::green:
-    return {430.f, 630.f}; //886, 137
+    return random_location(); //886, 137
   case saucer_type::beige:
     return random_location();//{994.f, 738.f};
   case saucer_type::yellow:
@@ -72,12 +72,20 @@ saucer::saucer(saucer_type type)
 	  type_{type} {}
 
 void saucer::act(delta_time dt) {
-  location(location() + v_ * to_seconds(dt));
+  //location(location() + v_ * to_seconds(dt));
 
-  if (saucer_type::green == this->type_) {
-	  std::cout << "location: " << location() << "\n";
+  //TODO FIX DAT IE TERUG GAAT
+  if (location().x() <= 15 || location().x() >= 940) {
+    std::cout << "1trg \n";
+    location({ location().x() + 1, location().y() + 1 });
+  } else if (location().y() <= 10 || location().y() >= 760) {
+    std::cout << "2trg \n";
+    location({ location().x() + 1, location().y() - 1 });
   }
-  
+  else {
+    location(location() + v_ * to_seconds(dt));
+  }
+
   for (std::size_t ix{}; ix < num_colliding_actors(); ++ix) {
     auto &other = colliding_actor(ix);
     if (dynamic_cast<human *>(&other)) {
