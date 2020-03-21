@@ -74,13 +74,13 @@ saucer::saucer(saucer_type type)
 void saucer::act(delta_time dt) {
   //location(location() + v_ * to_seconds(dt));
 
-  //TODO FIX DAT IE TERUG GAAT
-  if (location().x() <= 15 || location().x() >= 940) {
-    std::cout << "1trg \n";
-    location({ location().x() + 1, location().y() + 1 });
-  } else if (location().y() <= 10 || location().y() >= 760) {
-    std::cout << "2trg \n";
-    location({ location().x() + 1, location().y() - 1 });
+  //GAME BORDER
+  if (location().x() <= 5 || location().x() >= 960) {
+    //std::cout << "1trg \n";
+    location({ location().x(), location().y() });
+  } else if (location().y() <= 5 || location().y() >= 760) {
+    //std::cout << "2trg \n";
+    location({ location().x(), location().y() });
   }
   else {
     location(location() + v_ * to_seconds(dt));
@@ -90,7 +90,7 @@ void saucer::act(delta_time dt) {
     auto &other = colliding_actor(ix);
     if (dynamic_cast<human *>(&other)) {
       // remove human from play
-	  std::cout << "Beam me up scotty\n";
+	  std::cout << "Catched human!\n";
       // -- CHANGE THIS TO MORE SUITABLE BEHAVIOR FOR THE ASSESSMENT
       other.remove();
     }

@@ -1,4 +1,5 @@
 ~ betekent klaar
+- bijna klaar
 
 ::Algemeen::
 
@@ -12,7 +13,7 @@ Bewegen zich vrij rond, maar kunnen niet door of over gebouwen heen en niet aan 
 
 =Gedrag=
 ~Rode tank rijdt mensen dood
-~Groene tank neemt mensen mee (ook als iets met tank gebeurt)
+~Groene tank neemt mensen mee in veiligheid (ook als iets met tank gebeurt)
 
 Als beide een ufo ziet (200 pixels vandaan) gaan ze drie dingen doen (zie opdr)
 
@@ -21,7 +22,7 @@ Indien tank 100 schadepunten heeft, moet die naar andre gaan
 ::UFO::
 
 =Gedrag=
-Niet buiten randen van speeldveld
+-Niet buiten randen van speeldveld
 ~Starten willekeurig op een plek
 Dwalen door stad, tot een mens tegenkomt en die gaat volgen tot hij gevangen is of een tank ziet. Indien een tank ziet, zal hij die volgen
 

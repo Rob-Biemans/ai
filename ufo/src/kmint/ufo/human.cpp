@@ -1,6 +1,7 @@
 #include "kmint/ufo/human.hpp"
 #include "kmint/random.hpp"
 #include <string>
+#include <iostream>
 
 namespace kmint::ufo {
 
@@ -49,5 +50,8 @@ human::human()
 	drawable_{ *this, human_image() } {
 }
 
+void human::act(delta_time dt) {
+	move(v_ * to_seconds(dt));
+}
 
 } // namespace kmint::ufo
