@@ -15,15 +15,17 @@ graphics::image andre_image() {
 
 } // namespace
 andre::andre(map::map_graph& g, map::map_node& initial_node)
-	: play::map_bound_actor{ initial_node }, drawable_{ *this,
-													 graphics::image{
-														 andre_image()}  }{}
+	: play::map_bound_actor{ initial_node }, drawable_{ *this, graphics::image{ andre_image()} }, graph_{ g }, a_star_{g} {}
 
 void andre::act(delta_time dt) {
   t_since_move_ += dt;
+
+  a_star_.untag_nodes();
+  path_to_knoop_ = a_star_.search(node(), find_node_of_kind(graph_, '1'));
+  
   if (to_seconds(t_since_move_) >= 1) {
 	  // pick random edge
-	  int next_index = random_int(0, node().num_edges());
+	  int next_index = random_int(0, path_to_knoop_.front()->num_edges());
 	  this->node(node()[next_index].to());
 	  t_since_move_ = from_seconds(0);
   }

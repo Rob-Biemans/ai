@@ -32,6 +32,8 @@ private:
   delta_time t_since_move_{};
   tank_type type_;
   int amount_of_saved_humans = 0;
+  int amount_of_damage = 0;
+  int slowed_for_turns = 0;
 };
 
 } // namespace ufo

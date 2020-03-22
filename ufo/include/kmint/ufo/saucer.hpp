@@ -18,6 +18,7 @@ private:
   play::image_drawable drawable_;
   saucer_type type_;
   math::vector2d v_{};
+  int turns_to_wait = 0;
 };
 
 } // namespace kmint::ufo

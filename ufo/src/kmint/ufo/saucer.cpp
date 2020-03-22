@@ -86,6 +86,14 @@ void saucer::act(delta_time dt) {
     location(location() + v_ * to_seconds(dt));
   }
 
+  for (auto i = begin_perceived(); i != end_perceived(); ++i) {
+	  auto & a = *i;
+	  if (dynamic_cast<human *>(&a)) {
+		  std::cout << "Saw human at " << a.location().x() << ", "
+			  << a.location().y() << "\n";
+	  }
+  }
+
   for (std::size_t ix{}; ix < num_colliding_actors(); ++ix) {
     auto &other = colliding_actor(ix);
     if (dynamic_cast<human *>(&other)) {
