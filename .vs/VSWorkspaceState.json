@@ -10,6 +10,6 @@
     "\\ufo\\src\\kmint",
     "\\ufo\\src\\kmint\\ufo"
   ],
-  "SelectedNode": "\\ufo\\include\\kmint\\ufo\\a_star.hpp",
+  "SelectedNode": "\\ufo\\src\\kmint\\ufo\\a_star.cpp",
   "PreviewInSolutionExplorer": false
 }

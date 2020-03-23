@@ -30,6 +30,7 @@ namespace kmint {
 			// weet hoe de koe getekend moet worden
 			play::image_drawable drawable_;
 
+			char next_knoop = '1';
 			std::queue<const kmint::map::map_node*> path_to_knoop_;
 			kmint::map::map_graph& graph_;
 			a_star a_star_;

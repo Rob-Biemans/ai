@@ -28,6 +28,7 @@ namespace kmint {
 
 				for (size_t i = 0; i < current.num_edges(); i++)
 				{
+					// Check weight
 					const float weight = current[i].weight();
 					const double new_cost = cost_so_far[&current] + weight;
 					const kmint::map::map_node& neighbor = current[i].to();
@@ -36,6 +37,7 @@ namespace kmint {
 					graph_[neighbor.node_id()].tag(kmint::graph::node_tag::visited);
 					untag_queue_.push(&neighbor);
 
+					// Calc cost
 					if (cost_so_far.find(&neighbor) == cost_so_far.end()
 						|| new_cost < cost_so_far[&neighbor])
 					{
@@ -91,9 +93,14 @@ namespace kmint {
 			return path;
 		}
 
+		//http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
+		// Manhatten distance
 		double a_star::heuristic(const kmint::map::map_node& a, const kmint::map::map_node& b) const
 		{
-			return std::abs(a.location().x() - b.location().x()) + std::abs(a.location().y() - b.location().y());
+			float dx = std::abs(a.location().x() - b.location().x());
+			float dy = std::abs(a.location().y() - b.location().y());
+
+			return 1 * (dx + dy);
 		}
 
 	}

@@ -21,13 +21,35 @@ void andre::act(delta_time dt) {
   t_since_move_ += dt;
 
   a_star_.untag_nodes();
-  path_to_knoop_ = a_star_.search(node(), find_node_of_kind(graph_, '1'));
-  
+  path_to_knoop_ = a_star_.search(node(), find_node_of_kind(graph_, this->next_knoop));
+
   if (to_seconds(t_since_move_) >= 1) {
-	  // pick random edge
-	  int next_index = random_int(0, path_to_knoop_.front()->num_edges());
-	  this->node(node()[next_index].to());
+	  // find next correct edge
+	  std::size_t id = path_to_knoop_.front()->node_id();
+	  int found_index = 0;
+	  for (std::size_t i = 0; i < node().num_edges(); ++i) {
+		  if (node()[i].to().node_id() == id) {
+			  found_index = i;
+		  }
+	  }
+	  this->node(node()[found_index].to());
 	  t_since_move_ = from_seconds(0);
+  }
+
+  // if andre has reached destination/knoop, switch next target knoop in line
+  if (this->node().node_info().kind == this->next_knoop) {
+	  if (this->next_knoop == '1') {
+		  this->next_knoop = '2';
+	  }
+	  else if (this->next_knoop == '2') {
+		  this->next_knoop = '3';
+	  }
+	  else if (this->next_knoop == '3') {
+		  this->next_knoop = '4';
+	  }
+	  else if (this->next_knoop == '4') {
+		  this->next_knoop = '1';
+	  }
   }
 }
 
