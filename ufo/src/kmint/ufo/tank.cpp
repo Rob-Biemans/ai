@@ -28,9 +28,9 @@ tank::tank(map::map_graph& g, map::map_node& initial_node, tank_type t)
 	: play::map_bound_actor{ initial_node }, type_{t},
 	drawable_{ *this, graphics::image{tank_image(t)} } 
 	{
-		m_pStateMachine_ = std::unique_ptr<states::StateMachine<tank>>(new states::StateMachine<tank>(*this));
+		m_pStateMachine_ = std::unique_ptr<states::StateMachine>(new states::StateMachine(*this));
 
-		m_pStateMachine_->SetCurrentState(new states::TankWanderState());
+		m_pStateMachine_->SetCurrentState(new states::TankWanderState(*this));
 	}
 
 void tank::act(delta_time dt) {

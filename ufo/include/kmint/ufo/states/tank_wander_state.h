@@ -7,13 +7,13 @@ namespace kmint
 	{
 		namespace states
 		{
-			class TankWanderState : public State<tank>
+			class TankWanderState : public State
 			{
 			public:
-				TankWanderState() = default;
-				void Enter(tank& tank) override;
-				void Execute(tank& tank) override;
-				void Exit(tank& tank) override;
+				TankWanderState(tank & tank) : State(tank) {}
+				void Enter() override;
+				void Execute() override;
+				void Exit() override;
 			};
 		}
 	}

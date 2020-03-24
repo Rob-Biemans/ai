@@ -29,7 +29,7 @@ public:
   // andere actors kan waarnemen.
   scalar perception_range() const override { return 200.f; }
 
-  states::StateMachine<tank>& GetFSM()const {
+  states::StateMachine& GetFSM()const {
 	  return *m_pStateMachine_;
   }
 
@@ -41,7 +41,7 @@ private:
   int amount_of_damage = 0;
   int slowed_for_turns = 0;
 
-  std::unique_ptr<states::StateMachine<tank>> m_pStateMachine_;
+  std::unique_ptr<states::StateMachine> m_pStateMachine_;
 
 };
 
