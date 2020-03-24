@@ -9,14 +9,17 @@ namespace kmint
 		{
 			void TankWanderState::Enter(tank& tank)
 			{
+
 			}
 
 			void TankWanderState::Execute(tank& tank)
 			{
+
 			}
 
 			void TankWanderState::Exit(tank& tank)
 			{
+
 			}
 		}
 	}

@@ -12,10 +12,10 @@ namespace kmint
 			class StateMachine
 			{
 			private:
-				//a pointer to the agent that owns this instance
+			
 				entity_type& m_pOwner;
 
-				State<entity_type>* m_pCurrentState;
+				std::unique_ptr<State<entity_type>> m_pCurrentState;
 				//a record of the last state the agent was in
 				State<entity_type>* m_pPreviousState;
 				//this state logic is called every time the FSM is updated
@@ -25,7 +25,7 @@ namespace kmint
 				virtual ~StateMachine() = default;
 
 				//use these methods to initialize the FSM 
-				void SetCurrentState(State<entity_type>* s) { m_pCurrentState = s; }
+				void SetCurrentState(State<entity_type>* s) { m_pCurrentState = std::make_unique(s); }
 				void SetGlobalState(State<entity_type>* s) { m_pGlobalState = s; }
 				void SetPreviousState(State<entity_type>* s) { m_pPreviousState = s; }
 
@@ -35,13 +35,13 @@ namespace kmint
 					//if a global state exists, call its execute method 
 					if (m_pGlobalState)
 					{
-						m_pGlobalState->Execute(m_pOwner);
+						m_pGlobalState->Execute(*m_pOwner);
 					}
 
 					//same for the current state 
 					if (m_pCurrentState)
 					{
-						m_pCurrentState->Execute(m_pOwner);
+						m_pCurrentState->Execute(*m_pOwner);
 					}
 				}
 
@@ -54,13 +54,13 @@ namespace kmint
 					m_pPreviousState = m_pCurrentState;
 
 					//call the exit method of the existing state
-					m_pCurrentState->Exit(m_pOwner);
+					m_pCurrentState->Exit(*m_pOwner);
 
 					//change state to the new state
 					m_pCurrentState = pNewState;
 
 					//call the entry method of the new state
-					m_pCurrentState->Enter(m_pOwner);
+					m_pCurrentState->Enter(*m_pOwner);
 				}
 
 				//change state back to the previous state
