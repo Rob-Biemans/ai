@@ -9,7 +9,7 @@ namespace kmint
 		{
 			void TankWanderState::Enter()
 			{
-	
+
 			}
 
 			void TankWanderState::Execute()

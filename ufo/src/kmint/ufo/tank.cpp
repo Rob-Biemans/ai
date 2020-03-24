@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "kmint/ufo/states/tank_wander_state.h"
+#include "kmint/ufo/states/tank_global_state.h"
 
 namespace kmint::ufo {
 
@@ -31,6 +32,7 @@ tank::tank(map::map_graph& g, map::map_node& initial_node, tank_type t)
 		m_pStateMachine_ = std::unique_ptr<states::StateMachine>(new states::StateMachine(*this));
 
 		m_pStateMachine_->SetCurrentState(new states::TankWanderState(*this));
+		m_pStateMachine_->SetGlobalState(new states::TankGlobalState(*this));
 	}
 
 void tank::act(delta_time dt) {
