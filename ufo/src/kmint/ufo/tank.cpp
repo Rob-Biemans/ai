@@ -5,6 +5,8 @@
 #include "kmint/ufo/human.hpp"
 #include <iostream>
 
+#include "kmint/ufo/states/tank_wander_state.h"
+
 namespace kmint::ufo {
 
 namespace {
@@ -24,9 +26,16 @@ graphics::image tank_image(tank_type t) {
 
 tank::tank(map::map_graph& g, map::map_node& initial_node, tank_type t)
 	: play::map_bound_actor{ initial_node }, type_{t},
-	drawable_{ *this, graphics::image{tank_image(t)} } {}
+	drawable_{ *this, graphics::image{tank_image(t)} } 
+	{
+		m_pStateMachine_ = new states::StateMachine<tank>(*this);
+
+		m_pStateMachine_->SetCurrentState(new states::TankWanderState());
+	}
 
 void tank::act(delta_time dt) {
+	m_pStateMachine_->Update();
+
 	t_since_move_ += dt;
 	if (to_seconds(t_since_move_) >= 1) {
 		// pick random edge

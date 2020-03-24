@@ -5,6 +5,8 @@
 #include "kmint/play.hpp"
 #include "kmint/primitives.hpp"
 
+#include "kmint/ufo/states/state_machine.h"
+
 namespace kmint {
 namespace ufo {
 
@@ -27,6 +29,10 @@ public:
   // andere actors kan waarnemen.
   scalar perception_range() const override { return 200.f; }
 
+  states::StateMachine<tank>* GetFSM()const {
+	  return m_pStateMachine_;
+  }
+
 private:
   play::image_drawable drawable_;
   delta_time t_since_move_{};
@@ -34,6 +40,9 @@ private:
   int amount_of_saved_humans = 0;
   int amount_of_damage = 0;
   int slowed_for_turns = 0;
+
+  states::StateMachine<tank>* m_pStateMachine_;
+
 };
 
 } // namespace ufo

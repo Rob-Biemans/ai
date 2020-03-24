@@ -15,7 +15,7 @@ Bewegen zich vrij rond, maar kunnen niet door of over gebouwen heen en niet aan 
 ~Rode tank rijdt mensen dood
 ~Groene tank neemt mensen mee in veiligheid (ook als iets met tank gebeurt)
 
-Als beide een ufo ziet (200 pixels vandaan) gaan ze drie dingen doen (zie opdr)
+Als beide een ufo ziet (200 pixels vandaan) gaan ze drie dingen doen (zie opdr) (States)
 
 Indien tank 100 schadepunten heeft, moet die naar andre gaan
 
@@ -24,10 +24,10 @@ Indien tank 100 schadepunten heeft, moet die naar andre gaan
 =Gedrag=
 -Niet buiten randen van speeldveld
 ~Starten willekeurig op een plek
-Dwalen door stad, tot een mens tegenkomt en die gaat volgen tot hij gevangen is of een tank ziet. Indien een tank ziet, zal hij die volgen
+Dwalen door stad, tot een mens tegenkomt en die gaat volgen tot hij gevangen is of een tank ziet. Indien een tank ziet, zal hij die volgen (States)
 
 
 ::Andre::
 
 =Gedrag=
-Begint op type 1 en eindigt op 4, vervolgens weer bij 1 etc.
+~Begint op type 1 en eindigt op 4, vervolgens weer bij 1 etc.
