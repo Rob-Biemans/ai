@@ -4,6 +4,9 @@
 #include <string>
 #include <iostream>
 
+#include "kmint/ufo/states/saucer_global_state.h"
+#include "kmint/ufo/states/saucer_wander_state.h"
+
 namespace kmint::ufo {
 
 namespace {
@@ -69,9 +72,16 @@ saucer::saucer(saucer_type type)
     : play::free_roaming_actor{location_for(type)},
       drawable_{*this, image_for(type)}, 
 	  v_{velocity_for(type)},
-	  type_{type} {}
+	  type_{type} 
+	{
+		m_pStateMachine_ = std::unique_ptr<states::StateMachine>(new states::StateMachine(*this));
+
+		m_pStateMachine_->SetCurrentState(new states::SaucerWanderState(*this));
+		m_pStateMachine_->SetGlobalState(new states::SaucerGlobalState(*this));
+	}
 
 void saucer::act(delta_time dt) {
+  m_pStateMachine_->Update();
   //location(location() + v_ * to_seconds(dt));
 
   //GAME BORDER

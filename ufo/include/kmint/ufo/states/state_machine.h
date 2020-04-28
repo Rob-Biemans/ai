@@ -2,6 +2,8 @@
 #include "state.h"
 #include <string>
 
+#include "kmint/play/actor.hpp"
+
 namespace kmint 
 {
 	namespace ufo
@@ -12,7 +14,7 @@ namespace kmint
 			{
 			private:
 				//a pointer to the agent that owns this instance
-				play::map_bound_actor & m_pOwner;
+				play::actor & m_pOwner;
 
 				State* m_pCurrentState;
 				//a record of the last state the agent was in
@@ -20,7 +22,7 @@ namespace kmint
 				//this state logic is called every time the FSM is updated
 				State* m_pGlobalState;
 			public:
-				StateMachine(play::map_bound_actor & owner) : m_pOwner(owner), m_pCurrentState(NULL), m_pPreviousState(NULL), m_pGlobalState(NULL) {}				
+				StateMachine(play::actor & owner) : m_pOwner(owner), m_pCurrentState(NULL), m_pPreviousState(NULL), m_pGlobalState(NULL) {}				
 				virtual ~StateMachine() = default;
 
 				//use these methods to initialize the FSM 
