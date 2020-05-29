@@ -9,6 +9,7 @@ namespace kmint
 	{
 		namespace states
 		{
+			//Aan het begin van een ronde starten de UFO's op een willekeurige plek in de stad. Aanvankelijk zullen ze dwalen door de stad. Op het moment dat ze een mens zien, wordt dit hun doelwit.
 			void SaucerWanderState::Enter()
 			{
 				//std::cout << "SaucerWanderState::Enter()" << std::endl;
