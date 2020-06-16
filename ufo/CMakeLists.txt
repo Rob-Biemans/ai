@@ -28,7 +28,8 @@ add_library(ufo-common STATIC
   src/kmint/ufo/saucer_chase_human_state.cpp
   src/kmint/ufo/tank_grab_shield_state.cpp
   src/kmint/ufo/tank_grab_emp_state.cpp
-  src/kmint/ufo/tank_flee_from_saucer_state.cpp)
+  src/kmint/ufo/tank_flee_from_saucer_state.cpp
+  src/kmint/ufo/tank_repair_state.cpp)
 
 target_compile_features(ufo-common PUBLIC cxx_std_17)
 target_link_libraries(ufo-common PRIVATE kmint)
