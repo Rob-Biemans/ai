@@ -1,15 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\ufo",
-    "\\ufo\\include",
-    "\\ufo\\include\\kmint",
-    "\\ufo\\include\\kmint\\ufo",
-    "\\ufo\\include\\kmint\\ufo\\states",
-    "\\ufo\\src",
-    "\\ufo\\src\\kmint",
-    "\\ufo\\src\\kmint\\ufo"
+    "\\pigisland",
+    "\\pigisland\\src",
+    "\\pigisland\\src\\kmint",
+    "\\pigisland\\src\\kmint\\pigisland"
   ],
-  "SelectedNode": "\\libkmint",
+  "SelectedNode": "\\pigisland\\src\\kmint\\pigisland\\resources.cpp",
   "PreviewInSolutionExplorer": false
 }

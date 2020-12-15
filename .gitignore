@@ -1,7 +1,5 @@
+.ccls-cache/
 *~
-\#*
-.ccls-cache
 build/
-compile_commands.json
-.vs
-vs
+.cquery_cached_index/
+\#*

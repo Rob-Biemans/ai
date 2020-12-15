@@ -6,14 +6,15 @@
       "type": "dll",
       "exe": "",
       "project": "CMakeLists.txt",
-      "projectTarget": "kmint.dll (Install) (lib\\kmint.dll)",
-      "name": "kmint.dll (Install) (lib\\kmint.dll)"
+      "projectTarget": "kmint.dll (out\\kmint.dll)",
+      "name": "kmint.dll (out\\kmint.dll)"
     },
     {
-      "type": "default",
+      "type": "dll",
+      "exe": "",
       "project": "CMakeLists.txt",
-      "projectTarget": "ufo.exe (out\\ufo.exe)",
-      "name": "ufo.exe (out\\ufo.exe)"
+      "projectTarget": "kmint.dll (Install) (lib\\kmint.dll)",
+      "name": "kmint.dll (Install) (lib\\kmint.dll)"
     }
   ]
 }
