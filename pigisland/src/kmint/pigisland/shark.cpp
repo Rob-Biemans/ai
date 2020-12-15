@@ -19,11 +19,11 @@ void shark::act(delta_time dt) {
     t_passed_ = from_seconds(0);
   }
   // laat ook even zien welke varkentjes hij ruikt
-  for (auto i = begin_perceived(); i != end_perceived(); ++i) {
-    auto const &a = *i;
-    std::cout << "Smelled a pig at " << a.location().x() << ", "
-              << a.location().y() << "\n";
-  }
+  //for (auto i = begin_perceived(); i != end_perceived(); ++i) {
+  //  auto const &a = *i;
+  //  std::cout << "Smelled a pig at " << a.location().x() << ", "
+  //            << a.location().y() << "\n";
+  //}
 }
 
 } // namespace pigisland

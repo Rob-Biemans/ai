@@ -2,6 +2,8 @@
 #include "kmint/pigisland/node_algorithm.hpp"
 #include "kmint/pigisland/resources.hpp"
 #include "kmint/random.hpp"
+
+#include "kmint/pigisland/pig.hpp"
 namespace kmint {
 namespace pigisland {
   boat::boat(map::map_graph& g, map::map_node& initial_node)
@@ -17,6 +19,15 @@ namespace pigisland {
       this->node(node()[next_index].to());
       t_passed_ = from_seconds(0);
     }
+
+	// Boat helped Pig to board for safety
+	for (std::size_t ix{}; ix < num_colliding_actors(); ++ix) {
+		auto &other = colliding_actor(ix);
+		if (dynamic_cast<pig *>(&other)) {
+			std::cout << "A pig safely climbed onto the boat \n";
+			other.remove();
+		}
+	}
   }
 
 } // namespace pigisland

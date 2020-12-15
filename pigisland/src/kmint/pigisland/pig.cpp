@@ -11,6 +11,9 @@ pig::pig(math::vector2d location)
     drawable_{*this, pig_image()} {
 }
 
+void pig::act(delta_time dt) {
+	move(v_ * to_seconds(dt));
+}
 
 } // namespace pigisland
 
