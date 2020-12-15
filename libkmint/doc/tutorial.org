@@ -9,33 +9,34 @@
   implementeert.
 
 * Structuur van het project
-  Het project op Blackboard is onderverdeeld in een bibliotheek =libkmint= en
-  een applicatie =kmintapp=. Daarnaast bevat de map =dependencies= de SDL2 en
-  SDL2_image bibliotheek voor Windows. Linux- en macOS-gebruikers moeten deze
-  bibliotheken via een /package manager/ installeren.
+  Het project op Blackboard is onderverdeeld in een bibliotheek
+  =libkmint= en een applicatie =sim=. Daarnaast bevat de map
+  =dependencies= de SDL2 en SDL2_image bibliotheek voor
+  Windows. Linux- en macOS-gebruikers moeten deze bibliotheken via een
+  /package manager/ installeren.
   
-  Je plaatst jouw eigen bronbestanden in de map =kmintapp/src=. De code onder
+  Je plaatst jouw eigen bronbestanden in de map =sim/src=. De code onder
   =libkmint= laat je best ongemoeid. Mochten jij of een van je collega's
   namelijk een fout ontdekken, dan krijgen jullie van ons een nieuwe versie
   van =libkmint=. 
   
-  Als je een cpp-bestand toevoegt aan =kmintapp/src= dan dien je ook
-  =kmintapp/CMakeLists.txt= aan te passen. In dat bestand vind je nu
+  Als je een cpp-bestand toevoegt aan =sim/src= dan dien je ook
+  =sim/CMakeLists.txt= aan te passen. In dat bestand vind je nu
   onderstaande code:
   #+BEGIN_SRC cmake
-    add_executable(kmintapp
+    add_executable(sim
       src/main.cpp
-      src/hare.cpp
-      src/cow.cpp)
+      src/sim/hare.cpp
+      src/sim/cow.cpp)
   #+END_SRC
   Voeg je het bestand =astar.cpp= toe, moet deze als volgt aan het project
   worden gekoppeld:
   #+BEGIN_SRC cmake
-    add_executable(kmintapp
+    add_executable(sim
       src/main.cpp
-      src/astar.cpp # NIEUWE REGEL!
-      src/hare.cpp
-      src/cow.cpp)
+      src/sim/astar.cpp # NIEUWE REGEL!
+      src/sim/hare.cpp
+      src/sim/cow.cpp)
   #+END_SRC
   
   *Let op:* Headers moeten /niet/ aan het project worden gekoppeld. Deze
@@ -49,9 +50,9 @@
   Onder Windows wordt Visual Studio 2017 ondersteund. Om het
   project in Visual Studio 2017 te openen kies je "File -> Open -> CMake" en
   selecteer je het =CMakeLists.txt= bestand in de hoofdmap. *Let op:* Open niet
-  de gelijknamige bestanden in de mappen =kmintapp= of =libkmint=. 
+  de gelijknamige bestanden in de mappen =sim= of =libkmint=. 
 
-  Kies na het openen =kmintapp.exe= als "Startup Item" en druk op de knop met
+  Kies na het openen =sim.exe= als "Startup Item" en druk op de knop met
   het groene afspeelsymbool. Als het goed is verschijnt een zwart venster.
   
   
@@ -98,7 +99,7 @@
       ui::window window{app.create_window({1024, 768}, "hello")};
 
       // maak een podium aan
-      play::stage s{};
+      play::stage s{ {1024, 768 } };
 
       // Maak een event_source aan (hieruit kun je alle events halen, zoals
       // toetsaanslagen)
@@ -117,9 +118,12 @@
           // de meegegeven functie (of lambda) aanroept om met het
           // bijbehorende quit_event
           //
-          e.handle_quit([&ctl](ui::events::quit_event qe) { ctl.quit = true; });
-          e.handle_key_up([&ctl, &my_actor](ui::events::key_event k) {
-                          }
+          e.handle_quit([&](ui::events::quit_event qe) {
+            ctl.quit = true;
+          });
+          e.handle_key_up([&](ui::events::key_event k) {
+            // jouw code hier
+          });
         }
       });
     }
@@ -136,55 +140,151 @@
   die elk frame wordt aangeroepen. Via de meegegeven =frame= referentie kun je
   tekenen. Onderstaande code bevat de code voor een simpele =drawable= en een
   eerste =actor=.
+  
+  Plaats deze code boven de =sim/include/rectangle_drawable.hpp=. Deze
+  header doet een aantal dingen:
 
+  1. Deze importeert de definitie van de klasse =drawable=. Zonder
+     deze definitie kunnen we geen afgeleide klasse maken.
+  2. Daarnaast worden twee klasse alvast gedeclareerd, namelijk
+     =actor= in =kmint::play= en =frame= in =kmint::ui=. Omdat we deze
+     alleen via een pointer of reference benaderen, hebben we hier nog
+     geen /definitie/ van deze klassen nodig.
+  3. Als laatste definieert deze de klasse =rectangle_drawable= in
+     onze eigen namespace =sim=.
 
-  #+BEGIN_SRC cpp
-    class rectangle_drawable : public ui::drawable {
-    public:
-      rectangle_drawable(play::actor const &actor) : drawable{}, actor_{&actor} {}
-      void draw(ui::frame &f) const override;
+  #+begin_src cpp
+    #ifndef SIM_RECTANGLE_DRAWABLE_HPP
+    #define SIM_RECTANGLE_DRAWABLE_HPP
 
-    private:
-      play::actor const *actor_;
-    };
+    #include "kmint/ui/drawable.hpp"
 
-    void rectangle_drawable::draw(ui::frame &f) const {
-      f.draw_rectangle(actor_->location(), {10.0, 10.0}, graphics::colors::white);
+    // forward declarations
+    namespace kmint {
+      namespace play {
+        class actor;
+      }
+      namespace ui {
+        class frame;
+      }
     }
 
-    class hello_actor : public play::free_roaming_actor {
-    public:
-      hello_actor(math::vector2d location)
-          : free_roaming_actor{location}, drawable_{*this} {}
+    namespace sim {
 
-      const ui::drawable &drawable() const override { return drawable_; }
+    class rectangle_drawable : public kmint::ui::drawable {
+    public:
+      rectangle_drawable(kmint::play::actor const &actor) : drawable{}, actor_{&actor} {}
+      void draw(kmint::ui::frame &f) const override;
+
+    private:
+      kmint::play::actor const *actor_;
+    };
+
+    }
+
+    #endif
+  #+end_src
+  
+  Rest ons nog om de member function =draw= te implementeren. Dit doen
+  we in het bijbehorende =cpp=-bestand. Hiervoor gebruiken we member
+  functions en functionaliteit van zowel de =ui= als =play=
+  namespaces. Daarom importeren we deze:
+  
+  #+begin_src cpp
+    #include "sim/rectangle_drawable.hpp"
+    #include "kmint/ui.hpp"
+    #include "kmint/play.hpp"
+
+    namespace sim {
+
+    void rectangle_drawable::draw(kmint::ui::frame &f) const {
+      f.draw_rectangle(actor_->location(), {10.0, 10.0}, kmint::graphics::colors::white);
+    }
+
+    }
+  #+end_src
+  
+  Nu gaan we de actor maken, plaats daarvoor volgende code in
+  =sim/include/hello_actor.hpp=
+  
+  #+begin_src cpp
+    #ifndef SIM_HELLO_ACTOR_HPP
+    #define SIM_HELLO_ACTOR_HPP
+
+    #include "kmint/play.hpp"
+    #include "sim/rectangle_drawable.hpp"
+
+    namespace sim {
+
+    class hello_actor : public kmint::play::free_roaming_actor {
+    public:
+      hello_actor(kmint::math::vector2d location);
+      kmint::ui::drawable const &drawable() const override;
+      void move(kmint::math::vector2d delta);
 
     private:
       rectangle_drawable drawable_;
     };
+
+    } // namespace sim
+
+    #endif /* SIM_HELLO_ACTOR_HPP */
+  #+end_src
+  
+  Rest ons nog de member functions =drawable= en =move= te
+  implementeren. Dit doen we in =sim/src/sim/hello_actor.cpp=
+  
+  #+begin_src cpp
+    #include "sim/hello_actor.hpp"
+
+    namespace sim {
+
+    hello_actor::hello_actor(kmint::math::vector2d location)
+        : free_roaming_actor{location}, drawable_{*this} {}
+
+    kmint::ui::drawable const &hello_actor::drawable() const { return drawable_; }
+
+    void hello_actor::move(kmint::math::vector2d delta) {
+      location(location() + delta);
+    }
+
+    } // namespace sim
+  #+end_src
+  
+  Om deze actor vervolgens op je =stage= te plaatsen, gebruik je de
+  functie =stage::build_actor=. Deze functie bouwt een actor en geeft
+  een referentie naar de gebouwde =actor= terug. Jouw code zal dus
+  /nooit/ de eigenaar zijn van welke =actor= dan ook. Het eigendom van
+  deze objecten ligt bij =stage=. 
+  
+  Allereerst moeten we ervoor zorgen dat de definitie van
+  =hello_actor= bekend is. Daarvoor voeg je volgende include toe aan
+  =sim/src/main.cpp=:
+  
+  #+begin_src cpp
+    #include "sim/hello_actor.hpp"
+  #+end_src
+  
+  Vervolgens kun je de =actor= toevoegen aan je =stage=. Dit doe je
+  dus na de initialisatie van je =stage=:
+
+  #+BEGIN_SRC cpp
+      math::vector2d center{512.0, 384.0};
+      auto &my_actor = s.build_actor<sim::hello_actor>(center);
   #+END_SRC
   
-  Om deze actor op je =stage= te plaatsen, gebruik je de functie
-  =stage::build_actor=. Deze functie bouwt een actor en geeft een referentie
-  naar de gebouwde =actor= terug. Jouw code zal dus /nooit/ de eigenaar zijn
-  van welke =actor= dan ook. Het eigendom van deze objecten ligt bij
-  =stage=. Verander onderstaand stukje van je =main= functie:
-  #+BEGIN_SRC cpp
-      // maak een podium aan
-      play::stage s{};
-  #+END_SRC
-  in 
-  #+BEGIN_SRC cpp
-      // maak een podium aan
-      play::stage s{};
-
-      math::vector2d center{512.0, 384.0};
-      auto &my_actor = s.build_actor<hello_actor>(center);
-  #+END_SRC
+  Hoe werkt =build_actor=? =build_actor= is een template
+  function. Tussen de vishaken geef je aan welke klasse je wilt
+  maken. Alle argumenten die je aan de constructor van die klasse wilt
+  meegeven, geef je in dezelfde volgorde mee aan =build_actor=. Deze
+  zal ze vervolgens doorsturen naar de constructor van de opgegeven
+  klasse. Dit patroon staat bekend als /perfect forwarding/.
   
   
 * Interactie
-  Voeg onderstaande functie toe aan =hello_actor=:
+  We gaan er nu voor zorgen dat je het vierkantje op je scherm kunt
+  bewegen met de pijltjes toetsen. Hiervoor moeten we de member
+  function =move= van onze =hello_actor= aanroepen.
   #+BEGIN_SRC cpp
       void move(math::vector2d delta) { location(location() + delta); }
   #+END_SRC
@@ -197,7 +297,9 @@
           // de meegegeven functie (of lambda) aanroept om met het
           // bijbehorende quit_event
           //
-          e.handle_quit([&ctl](ui::events::quit_event qe) { ctl.quit = true; });
+          e.handle_quit([&ctl](ui::events::quit_event qe) {
+            ctl.quit = true;
+          });
           e.handle_key_up([&my_actor](ui::events::key_event k) {
             switch (k.key) {
             case ui::events::key::up:
@@ -380,9 +482,10 @@
   koe. Zij zal het eiland vanuit dit punt over het eiland gaan dwalen.
   
   Eerst schrijven we een functie die de de kaart afzoekt naar het beginpunt
-  van de koe:
+  van de koe. Plaats deze functie boven je =main= functie:
+
   #+BEGIN_SRC cpp
-    const map::map_node &find_cow_node(const map::map_graph &graph) {
+    map::map_node &find_cow_node(map::map_graph &graph) {
       for (std::size_t i = 0; i < graph.num_nodes(); ++i) {
         if (graph[i].node_info().kind == 'C') {
           return graph[i];
@@ -396,54 +499,59 @@
   #+BEGIN_SRC cpp
     auto &cow_node = find_cow_node(m.graph());
   #+END_SRC
-  
 
   Actors die zich over de kaart bewegen worden afgeleid van de klasse
   =map_actor=. We maken nu een klasse koe die elke seconde een stap op de
-  kaart zet. Hiervoor maken we een header =cow.hpp= en een bronbestand,
-  =cow.cpp= aan. In =cow.hpp= plaats je volgende code:
+  kaart zet. Plaats hiervoor de volgende code in
+  =sim/include/sim/cow.hpp=:
+
   #+BEGIN_SRC cpp
-    #ifndef KMINTAPP_COW_HPP
-    #define KMINTAPP_COW_HPP
+    #ifndef SIM_COW_HPP
+    #define SIM_COW_HPP
 
     #include "kmint/map/map.hpp"
     #include "kmint/play.hpp"
     #include "kmint/primitives.hpp"
 
+    namespace sim {
+
     class cow : public kmint::play::map_bound_actor {
     public:
-      cow(kmint::map::map_graph const &g, kmint::map::map_node const &initial_node);
+      cow(kmint::map::map_node &initial_node);
       // wordt elke game tick aangeroepen
       void act(kmint::delta_time dt) override;
       kmint::ui::drawable const &drawable() const override { return drawable_; }
       // als incorporeal false is, doet de actor mee aan collision detection
       bool incorporeal() const override { return false; }
-      // geeft de radius van deze actor mee. Belangrijk voor collision detection
-      kmint::scalar radius() const override { return 16.0; }
+      // geeft de de lengte van een zijde van de collision box van deze actor terug.
+      // Belangrijk voor collision detection
+      kmint::scalar collision_range() const override { return 16.0; }
 
     private:
       // hoeveel tijd is verstreken sinds de laatste beweging
       kmint::delta_time t_passed_{};
       // weet hoe de koe getekend moet worden
       kmint::play::image_drawable drawable_;
-      // edge_type const *next_edge_{nullptr};
-      // edge_type const *pick_next_edge();
     };
 
-    #endif /* KMINTAPP_COW_HPP */
+    } // namespace sim
+
+    #endif
   #+END_SRC
   
-  =cow.cpp= ziet er als volgt uit:
+  =sim/src/sim/cow.cpp= ziet er als volgt uit:
   #+BEGIN_SRC cpp
-    #include "cow.hpp"
+    #include "sim/cow.hpp"
     #include "kmint/random.hpp"
     using namespace kmint;
 
+    namespace sim {
+
     static const char *cow_image = "resources/cow.png";
-    cow::cow(map::map_graph const &g, map::map_node const &initial_node)
-        : play::map_bound_actor{g, initial_node}, drawable_{*this,
-                                                            kmint::graphics::image{
-                                                                cow_image, 0.1}} {}
+    cow::cow(map::map_node &initial_node)
+        : play::map_bound_actor{initial_node}, drawable_{*this,
+                                                         kmint::graphics::image{
+                                                             cow_image, 0.1}} {}
 
     void cow::act(delta_time dt) {
       t_passed_ += dt;
@@ -454,16 +562,18 @@
         t_passed_ = from_seconds(0);
       }
     }
+
+    }
   #+END_SRC
   
   Laad =cow.hpp= vervolgens in =main.cpp=:
   #+BEGIN_SRC cpp
-    #include "cow.hpp"
+    #include "sim/cow.hpp"
   #+END_SRC
   
   En plaats de koe op het podium:
   #+BEGIN_SRC cpp
-    s.build_actor<cow>(m.graph(), cow_node);
+    s.build_actor<sim::cow>(cow_node);
   #+END_SRC
   
   
@@ -472,53 +582,58 @@
   vangen. De haas bevindt zich op een van de vier uithoeken van de kaart, deze
   zijn te herkennen aan de =H= in de tekstuele representatie.
   
-  De haas is een =map_bound_actor=. De header file voor de haas wordt =hare.hpp=:
+  De haas is een =map_bound_actor=. De header file voor de haas wordt =sim/include/sim/hare.hpp=:
   #+BEGIN_SRC cpp
-    #ifndef KMINTAPP_HARE_HPP
-    #define KMINTAPP_HARE_HPP
+    #ifndef SIM_HARE_HPP
+    #define SIM_HARE_HPP
 
     #include "kmint/map/map.hpp"
     #include "kmint/play.hpp"
     #include "kmint/primitives.hpp"
-    #include "kmint/random.hpp"
+
+    namespace sim {
 
     class cow;
 
     class hare : public kmint::play::map_bound_actor {
     public:
-      hare(kmint::map::map_graph const &g);
+      hare(kmint::map::map_graph &g);
       void act(kmint::delta_time dt) override;
       kmint::ui::drawable const &drawable() const override { return drawable_; }
       void set_cow(cow const &c) { cow_ = &c; }
       bool incorporeal() const override { return false; }
-      kmint::scalar radius() const override { return 16.0; }
+      kmint::scalar collision_range() const override { return 16.0; }
 
     private:
       kmint::play::image_drawable drawable_;
-      cow const *cow_;
+      kmint::map::map_graph *graph_;
+      cow const *cow_{};
     };
 
-    #endif /* KMINTAPP_HARE_HPP */
+    } // namespace sim
+
+    #endif // SIM_HARE_HPP
   #+END_SRC
   
   De haas blijft net zolang staan tot de koe haar vangt. Op dat moment wordt
   ze verplaatst naar een andere geschikte locatie. De haas wordt als volgt
   geïmplementeerd:
   #+BEGIN_SRC cpp
-    #include "hare.hpp"
-    #include "cow.hpp"
+    #include "sim/hare.hpp"
     #include "kmint/random.hpp"
+    #include "sim/cow.hpp"
+    namespace sim {
 
     using namespace kmint;
 
     static const char *hare_image = "resources/hare.png";
 
-    map::map_node const &random_hare_node(map::map_graph const &graph) {
+    std::size_t random_hare_node(map::map_graph const &graph) {
       int r = kmint::random_int(0, 3);
       for (std::size_t i = 0; i < graph.num_nodes(); ++i) {
         if (graph[i].node_info().kind == 'H') {
           if (r == 0)
-            return graph[i];
+            return i;
           else
             --r;
         }
@@ -526,18 +641,21 @@
       throw "could not find node for hare";
     }
 
-    hare::hare(map::map_graph const &g)
-        : play::map_bound_actor{g, random_hare_node(g)},
-          drawable_{*this, kmint::graphics::image{hare_image, 0.2}} {}
+    hare::hare(map::map_graph &g)
+        : play::map_bound_actor{g[random_hare_node(g)]},
+          drawable_{*this, kmint::graphics::image{hare_image}}, graph_{&g} {}
 
     void hare::act(kmint::delta_time dt) {
       for (std::size_t i = 0; i < num_colliding_actors(); ++i) {
         auto &a = colliding_actor(i);
-        if (&a == cow_) {
-          node(random_hare_node(graph()));
+        if (cow_ != nullptr && &a == cow_) {
+          auto &g = *graph_;
+          node(g[random_hare_node(g)]);
+          return;
         }
       }
     }
+    } // namespace sim
   #+END_SRC
   
   Pas tenslotte de code in =main.cpp= aan opdat de haas weet wie de koe is. De
@@ -545,8 +663,8 @@
   zien:
   #+BEGIN_SRC cpp
     auto &cow_node = find_cow_node(m.graph());
-    auto &my_cow = s.build_actor<cow>(m.graph(), cow_node);
-    auto &my_hare = s.build_actor<hare>(m.graph());
+    auto &my_cow = s.build_actor<sim::cow>(cow_node);
+    auto &my_hare = s.build_actor<sim::hare>(m.graph());
     my_hare.set_cow(my_cow);
   #+END_SRC
 
@@ -562,4 +680,4 @@
 [fn:1] Zie [[https://en.cppreference.com/w/cpp/language/string_literal][dit voorbeeld op cppreference.com]].
 
 
-  
+

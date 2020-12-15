@@ -4,11 +4,12 @@
 #include "kmint/math/rectangle.hpp"
 #include "kmint/play/actor.hpp"
 #include "kmint/util/overload.hpp"
-#include <array>
 #include <cstddef>
+#include <iostream>
 #include <memory>
 #include <optional>
 #include <variant>
+#include <vector>
 
 namespace kmint {
 namespace play {
@@ -39,10 +40,10 @@ public:
       return;
     auto next =
         std::visit(overload{[&](free &f) -> std::optional<saturated> {
-                              if (f.n == MaxActors) {
+                              if (f.actors.size() == MaxActors && can_split()) {
                                 return split(f, a);
                               } else {
-                                f.actors[f.n++] = &a;
+                                f.actors.push_back(&a);
                                 return {};
                               }
                             },
@@ -69,6 +70,31 @@ public:
                state_);
   }
 
+  void debug_print(int depth = 0) const {
+    auto prefix = [depth]() {
+      for (int d{}; d < depth; ++d) {
+        std::cout << ' ';
+      }
+    };
+    std::visit(overload{[&](free const &f) {
+                          prefix();
+                          std::cout << area_ << '\n';
+                          for (auto i = f.actors.cbegin(); i != f.actors.cend();
+                               ++i) {
+                            if (auto p = *i; p) {
+                              prefix();
+                              std::cout << p << '\n';
+                            }
+                          }
+                        },
+                        [&](saturated const &s) {
+                          for (auto const &child : s.children) {
+                            child->debug_print(depth + 1);
+                          }
+                        }},
+               state_);
+  }
+
   //! Find all actors in the given \a bounds and writes them to \a destination
   /*!
      This method will search the area managed by the \c quad_tree for any actors
@@ -81,12 +107,9 @@ public:
     if (!intersect(bounds, area_))
       return;
     std::visit(overload{[&](free const &f) {
-                          for (std::size_t i{0}; i < f.n; ++i) {
-                            auto *a = f.actors[i];
-
+                          for (auto *a : f.actors) {
                             if (contains(bounds, a->location())) {
-
-                              *destination++ = f.actors[i];
+                              *destination++ = a;
                             }
                           }
                         },
@@ -100,8 +123,8 @@ public:
 
 private:
   struct free {
-    std::array<actor *, MaxActors> actors{};
-    std::size_t n{};
+    free() { actors.reserve(MaxActors); }
+    std::vector<actor *> actors{};
   };
   struct saturated {
     std::unique_ptr<quad_tree> children[4]{};
@@ -139,6 +162,10 @@ private:
     }
     return 3;
   };
+
+  bool can_split() {
+    return area_.size().width() >= 2 && area_.size().height() >= 2;
+  }
 
   math::rectangle area_;
   std::variant<free, saturated> state_{free{}};

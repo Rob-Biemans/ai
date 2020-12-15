@@ -3,6 +3,7 @@
 
 #include "kmint/graphics/color.hpp"
 #include "kmint/math/vector2d.hpp"
+#include "kmint/math/angle.hpp"
 #include "kmint/primitives.hpp"
 #include "kmint/ui/sdl/ptr.hpp"
 #include "kmint/ui/sdl/surface.hpp"
@@ -28,9 +29,9 @@ private:
 };
 
 void render(SDL_Renderer *ren, sdl::texture const &t, math::vector2d center,
-            scalar scale);
+            scalar scale, math::angle a = math::angle::from_degrees(0));
 void render(SDL_Renderer *ren, sdl::texture const &t, math::vector2d center,
-            scalar scale, graphics::color tint);
+            scalar scale, graphics::color tint, math::angle a = math::angle::from_degrees(0));
 
 } // namespace kmint::ui::sdl
 

@@ -53,12 +53,17 @@ constexpr quadrants<Scalar>
 to_quadrants(basic_rectangle<Scalar> const &r) noexcept {
   auto x = r.top_left().x();
   auto y = r.top_left().y();
-  auto hw = r.size().width() / 2;
-  auto hh = r.size().height() / 2;
-  return quadrants<Scalar>{{{{{x + hw, y}, {hw, hh}},
+  auto w = r.size().width();
+  auto h = r.size().height();
+  auto hw = w / 2;
+  auto hh = h / 2;
+  auto ohw = w - hw;
+  auto ohh = h - hh;
+
+  return quadrants<Scalar>{{{{{x + hw, y}, {ohw, hh}},
                              {{x, y}, {hw, hh}},
-                             {{x, y + hh}, {hw, hh}},
-                             {{x + hw, y + hh}, {hw, hh}}}}};
+                             {{x, y + hh}, {hw, ohh}},
+                             {{x + hw, y + hh}, {ohw, ohh}}}}};
 }
 
 template <typename Scalar>

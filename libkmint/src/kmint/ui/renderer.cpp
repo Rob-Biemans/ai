@@ -44,13 +44,13 @@ graphics::color renderer::render_color() const noexcept {
 }
 
 void renderer::render_image(math::vector2d center, graphics::image const &img) {
-  sdl::render(ren_.get(), get_or_load(img), center, img.scale());
+  sdl::render(ren_.get(), get_or_load(img), center, img.scale(), img.rotation());
 }
 
 void renderer::render_image(math::vector2d center, graphics::image const &img,
                             graphics::color tint) {
 
-  sdl::render(ren_.get(), get_or_load(img), center, img.scale(), tint);
+  sdl::render(ren_.get(), get_or_load(img), center, img.scale(), tint, img.rotation());
 }
 
 void renderer::render_rectangle(math::rectangle rect) {

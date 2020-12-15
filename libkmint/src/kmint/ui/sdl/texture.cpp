@@ -23,7 +23,7 @@ private:
 } // namespace
 
 void render(SDL_Renderer *ren, sdl::texture const &t, math::vector2d center,
-            scalar scale) {
+            scalar scale, math::angle a) {
   auto w = t.width() * scale;
   auto h = t.height() * scale;
   auto x = center.x() - w / 2.0;
@@ -34,11 +34,11 @@ void render(SDL_Renderer *ren, sdl::texture const &t, math::vector2d center,
   r.y = static_cast<int>(y);
   r.w = static_cast<int>(w);
   r.h = static_cast<int>(h);
-  SDL_RenderCopyEx(ren, t.unwrap(), nullptr, &r, 0.0, NULL, SDL_FLIP_NONE);
+  SDL_RenderCopyEx(ren, t.unwrap(), nullptr, &r, a.degrees(), NULL, SDL_FLIP_NONE);
 }
 void render(SDL_Renderer *ren, sdl::texture const &t, math::vector2d center,
-            scalar scale, graphics::color tint) {
+            scalar scale, graphics::color tint, math::angle a) {
   texture_tint tt{t, tint};
-  render(ren, t, center, scale);
+  render(ren, t, center, scale, a);
 }
 } // namespace kmint::ui::sdl
