@@ -5,6 +5,8 @@
 #include "kmint/play.hpp"
 #include "kmint/primitives.hpp"
 
+#include "kmint/pigisland/states/state_machine.h"
+
 namespace kmint {
 namespace pigisland {
 
@@ -25,11 +27,17 @@ public:
   // andere actors kan waarnemen.
   scalar perception_range() const override { return 200.f; }
 
+  states::StateMachine& GetFSM()const {
+	  return *m_pStateMachine_;
+  }
+
 private:
   // hoeveel tijd is verstreken sinds de laatste beweging
   delta_time t_passed_{};
   // weet hoe de koe getekend moet worden
   play::image_drawable drawable_;
+
+  std::unique_ptr<states::StateMachine> m_pStateMachine_;
 };
 
 } // namespace pigisland
