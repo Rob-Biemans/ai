@@ -1,0 +1,22 @@
+-- States
+
+Knabbel 
+-Global
+-Wander (ruikt geen varkentje meer)
+-Afraid (binnen straal van 100 pixels van boot, dan dwaal voor 10 stappen en eet geen varkens)
+-Hunt (ruikt varken en gaat naar locatie van op dat moment)
+-Tired (terug naar rustplaats en bij aankomst worden nieuwe varkenspopulatie gemaakt)
+
+Porcus Vincit (boot)
+-Global
+-Wander (dwaalt rond en pakt varkentjes op onderweg, en raakt langzaam 1 punt beschadigd aan de lak per beurt)
+-Repair (lak volledig beschadigd dus, moet aanmeren voor onderhoud)
+
+-----
+
+- Haai en Boot bewegen zich 4x zo langzaam in rotsgebieden
+- Varkentjes bewegen zich vrij over het scherm*
+- Varkentjes kunnen niet uit scherm bewegen
+- Varkentjes kunnen niet op de graseilanden of pieren komen\
+- Varkentjes beschikken over eigenschappen
+- Varkentjes beschikt over groeps gedrag (aan de hand van eigenschappen)

@@ -1,16 +1,14 @@
 {
   "ExpandedNodes": [
     "",
-    "\\libkmint\\include\\kmint\\map",
-    "\\pigisland",
     "\\pigisland\\include",
     "\\pigisland\\include\\kmint",
     "\\pigisland\\include\\kmint\\pigisland",
     "\\pigisland\\include\\kmint\\pigisland\\states",
     "\\pigisland\\src",
     "\\pigisland\\src\\kmint",
-    "\\pigisland\\src\\kmint\\pigisland",
-    "\\pigisland\\src\\kmint\\pigisland\\states"
+    "\\pigisland\\src\\kmint\\pigisland"
   ],
+  "SelectedNode": "\\todo.txt",
   "PreviewInSolutionExplorer": false
 }
