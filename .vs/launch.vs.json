@@ -15,6 +15,12 @@
       "project": "CMakeLists.txt",
       "projectTarget": "kmint.dll (Install) (lib\\kmint.dll)",
       "name": "kmint.dll (Install) (lib\\kmint.dll)"
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "pigisland.exe (out\\pigisland.exe)",
+      "name": "pigisland.exe (out\\pigisland.exe)"
     }
   ]
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "../include/kmint/pigisland/states/shark_wander_state.h"
+#include "kmint/pigisland/states/shark_wander_state.h"
 #include <string>
 #include <iostream>
 

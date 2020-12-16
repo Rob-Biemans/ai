@@ -14,13 +14,15 @@ shark::shark(map::map_graph &g, map::map_node &initial_node)
                                                      graphics::image{
                                                          shark_image()}} 
 {
-	m_pStateMachine_ = std::unique_ptr<states::StateMachine>(new states::StateMachine(*this));
+	//m_pStateMachine_ = std::unique_ptr<states::StateMachine>(new states::StateMachine(*this));
 
-	m_pStateMachine_->SetCurrentState(new states::SharkWanderState(*this));
-	m_pStateMachine_->SetGlobalState(new states::SharkGlobalState(*this));
+	//m_pStateMachine_->SetCurrentState(new states::SharkWanderState(*this));
+	//m_pStateMachine_->SetGlobalState(new states::SharkGlobalState(*this));
 }
 
 void shark::act(delta_time dt) {
+  //m_pStateMachine_->Update();
+
   t_passed_ += dt;
   if (to_seconds(t_passed_) >= 1) {
     // pick random edge
