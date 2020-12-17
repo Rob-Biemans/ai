@@ -6,6 +6,7 @@
 #include "kmint/primitives.hpp"
 
 #include "kmint/pigisland/states/state_machine.h"
+#include "kmint/pigisland/a_star.hpp"
 
 namespace kmint {
 namespace pigisland {
@@ -27,10 +28,21 @@ public:
   // andere actors kan waarnemen.
   scalar perception_range() const override { return 200.f; }
 
-  states::StateMachine& GetFSM()const {
+  states::StateMachine& GetFSM() const {
 	  return *m_pStateMachine_;
   }
 
+  a_star GetAStar() const {
+	  return a_star_;
+  }
+
+  char GetRestingPlaceChar() const {
+	  return resting_place_char_;
+  }
+
+  kmint::map::map_graph& GetGraph() const {
+	  return graph_;
+  }
 private:
   // hoeveel tijd is verstreken sinds de laatste beweging
   delta_time t_passed_{};
@@ -38,6 +50,12 @@ private:
   play::image_drawable drawable_;
 
   std::unique_ptr<states::StateMachine> m_pStateMachine_;
+
+  // K is rustplek van de haai
+  char resting_place_char_ = 'K';
+  std::queue<const kmint::map::map_node*> path_to_resting_place_;
+  kmint::map::map_graph& graph_;
+  a_star a_star_;
 };
 
 } // namespace pigisland

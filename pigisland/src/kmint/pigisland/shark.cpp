@@ -12,7 +12,7 @@ namespace pigisland {
 shark::shark(map::map_graph &g, map::map_node &initial_node)
     : play::map_bound_actor{initial_node}, drawable_{*this,
                                                      graphics::image{
-                                                         shark_image()}} 
+                                                         shark_image()}}, graph_{ g }, a_star_{ g }
 {
 	m_pStateMachine_ = std::unique_ptr<states::StateMachine>(new states::StateMachine(*this));
 

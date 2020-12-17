@@ -16,7 +16,9 @@ namespace kmint
 
 			void SharkTiredState::Execute()
 			{
-				//std::cout << "SharkTiredState::Execute()" << std::endl;
+				//TODO 
+				//m_shark_.GetAStar().untag_nodes();
+				//path_to_resting_place_ = m_shark_.GetAStar().search(m_shark_.node(), find_node_of_kind(m_shark_.GetGraph(), m_shark_.GetRestingPlaceChar()));
 			}
 
 			void SharkTiredState::Exit()
