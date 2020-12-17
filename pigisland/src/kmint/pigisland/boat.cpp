@@ -4,14 +4,25 @@
 #include "kmint/random.hpp"
 
 #include "kmint/pigisland/pig.hpp"
+
+#include "../../../include/kmint/pigisland/states/boat_wander_state.h"
+#include "../../../include/kmint/pigisland/states/boat_global_state.h"
+
 namespace kmint {
 namespace pigisland {
   boat::boat(map::map_graph& g, map::map_node& initial_node)
     : play::map_bound_actor{ initial_node },
-      drawable_{ *this, graphics::image{boat_image()} } {}
+      drawable_{ *this, graphics::image{boat_image()} } {
+	  m_pStateMachine_ = std::unique_ptr<states::StateMachine>(new states::StateMachine(*this));
+
+	  m_pStateMachine_->SetCurrentState(new states::BoatWanderState(*this));
+	  m_pStateMachine_->SetGlobalState(new states::BoatGlobalState(*this));
+  }
 
 
   void boat::act(delta_time dt) {
+	m_pStateMachine_->Update();
+
     t_passed_ += dt;
     if (to_seconds(t_passed_) >= 1) {
       // pick random edge
