@@ -28,11 +28,11 @@ public:
   // andere actors kan waarnemen.
   scalar perception_range() const override { return 200.f; }
 
-  states::StateMachine& GetFSM() const {
+  states::StateMachine& getFSM() const {
 	  return *m_pStateMachine_;
   }
 
-  char GetRestingPlaceChar() const {
+  char getRestingPlaceChar() const {
 	  return resting_place_char_;
   }
 

@@ -20,6 +20,13 @@ namespace kmint
 				std::cout << "SharkWanderState::Execute()" << std::endl;
 				int next_index = random_int(0, m_shark_.node().num_edges());
 				m_shark_.node(m_shark_.node()[next_index].to());
+
+				// laat ook even zien welke varkentjes hij ruikt
+				for (auto i = m_shark_.begin_perceived(); i != m_shark_.end_perceived(); ++i) {
+					auto const &a = *i;
+					std::cout << "Smelled a pig at " << a.location().x() << ", "
+						<< a.location().y() << "\n";
+				}
 			}
 
 			void SharkWanderState::Exit()

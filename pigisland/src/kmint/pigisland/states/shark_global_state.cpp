@@ -17,7 +17,7 @@ namespace kmint
 			{
 				std::cout << "Shark tired level at " << m_shark_.getTired() << "%\n";
 				if (m_shark_.getTired() >= 100) {
-					m_shark_.GetFSM().ChangeState(new SharkTiredState(graph_, m_shark_));
+					m_shark_.getFSM().ChangeState(new SharkTiredState(graph_, m_shark_));
 				}
 				else {
 					m_shark_.addTired();

@@ -22,7 +22,7 @@ public:
 	// Belangrijk voor collision detection
 	scalar collision_range() const override { return 16.0; }
 
-	states::StateMachine& GetFSM() const {
+	states::StateMachine& getFSM() const {
 		return *m_pStateMachine_;
 	}
 
