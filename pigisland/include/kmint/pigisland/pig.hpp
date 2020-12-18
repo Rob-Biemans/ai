@@ -18,6 +18,8 @@ public:
 
   void move(math::vector2d delta) { location(location() + delta); }
   void act(delta_time dt) override;
+  bool perceivable() const override { return true; }
+  bool perceptive() const override { return true; }
 
 private:
   play::image_drawable drawable_;

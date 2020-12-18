@@ -75,12 +75,6 @@ namespace kmint
 				State& CurrentState() const { return *m_pCurrentState; }
 				State& GlobalState() const { return *m_pGlobalState; }
 				State& PreviousState() const { return *m_pPreviousState; }
-
-				//returns true if the current state’s type is equal to the type of the class passed as a parameter.
-				//TODO
-				//bool isInState(const State& st) const { 
-				//	return true; 
-				//};
 			};
 		}
 	}

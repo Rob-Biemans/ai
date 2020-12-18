@@ -21,10 +21,11 @@ namespace pigisland {
 
 
   void boat::act(delta_time dt) {
-	m_pStateMachine_->Update();
-
+	
     t_passed_ += dt;
     if (to_seconds(t_passed_) >= 1) {
+	  m_pStateMachine_->Update();
+
       // pick random edge
       int next_index = random_int(0, node().num_edges());
       this->node(node()[next_index].to());
@@ -41,5 +42,10 @@ namespace pigisland {
 	}
   }
 
+  void boat::repairDamage(int dock, int value) {
+	  damaged_ -= value;
+
+	  std::cout << "Repaired for " << value << " at dock number " << dock;
+  }
 } // namespace pigisland
 } // namespace kmint

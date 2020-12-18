@@ -22,9 +22,13 @@ public:
 	// Belangrijk voor collision detection
 	scalar collision_range() const override { return 16.0; }
 
-	states::StateMachine& GetFSM()const {
+	states::StateMachine& GetFSM() const {
 		return *m_pStateMachine_;
 	}
+
+	int getTotalDamaged() const { return damaged_; }
+	void addDamage() { damaged_++; }
+	void repairDamage(int dock, int value);
 private:
 	// hoeveel tijd is verstreken sinds de laatste beweging
 	delta_time t_passed_{};
@@ -32,6 +36,7 @@ private:
 	play::image_drawable drawable_;
 
 	std::unique_ptr<states::StateMachine> m_pStateMachine_;
+	int damaged_ = 0;
 };
 
 } // namespace pigisland

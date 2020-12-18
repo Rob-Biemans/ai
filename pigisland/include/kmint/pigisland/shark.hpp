@@ -32,17 +32,10 @@ public:
 	  return *m_pStateMachine_;
   }
 
-  a_star GetAStar() const {
-	  return a_star_;
-  }
-
   char GetRestingPlaceChar() const {
 	  return resting_place_char_;
   }
 
-  kmint::map::map_graph& GetGraph() const {
-	  return graph_;
-  }
 private:
   // hoeveel tijd is verstreken sinds de laatste beweging
   delta_time t_passed_{};
@@ -53,9 +46,6 @@ private:
 
   // K is rustplek van de haai
   char resting_place_char_ = 'K';
-  std::queue<const kmint::map::map_node*> path_to_resting_place_;
-  kmint::map::map_graph& graph_;
-  a_star a_star_;
 };
 
 } // namespace pigisland
