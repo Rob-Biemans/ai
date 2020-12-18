@@ -22,7 +22,7 @@ namespace kmint
 				//this state logic is called every time the FSM is updated
 				State* m_pGlobalState;
 			public:
-				StateMachine(play::actor & owner) : m_pOwner(owner), m_pCurrentState(NULL), m_pPreviousState(NULL), m_pGlobalState(NULL) {}				
+				StateMachine(play::actor & owner) : m_pOwner(owner), m_pCurrentState(NULL), m_pPreviousState(NULL), m_pGlobalState(NULL) {}
 				virtual ~StateMachine() = default;
 
 				//use these methods to initialize the FSM 

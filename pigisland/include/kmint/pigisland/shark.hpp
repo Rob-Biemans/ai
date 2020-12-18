@@ -36,6 +36,9 @@ public:
 	  return resting_place_char_;
   }
 
+  int getTired() const { return tired_; }
+  void addTired() { tired_++; }
+  void resetTired();
 private:
   // hoeveel tijd is verstreken sinds de laatste beweging
   delta_time t_passed_{};
@@ -46,6 +49,7 @@ private:
 
   // K is rustplek van de haai
   char resting_place_char_ = 'K';
+  int tired_ = 0;
 };
 
 } // namespace pigisland

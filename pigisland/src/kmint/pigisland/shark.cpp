@@ -17,19 +17,18 @@ shark::shark(map::map_graph &g, map::map_node &initial_node)
 {
 	m_pStateMachine_ = std::unique_ptr<states::StateMachine>(new states::StateMachine(*this));
 
-	m_pStateMachine_->SetCurrentState(new states::SharkTiredState(g, *this));
-	m_pStateMachine_->SetGlobalState(new states::SharkGlobalState(*this));
+	m_pStateMachine_->SetCurrentState(new states::SharkWanderState(*this));
+	m_pStateMachine_->SetGlobalState(new states::SharkGlobalState(g, *this));
 }
 
 void shark::act(delta_time dt) {
   t_passed_ += dt;
-  if (to_seconds(t_passed_) >= 1) {
-	m_pStateMachine_->Update();
-	std::cout << this->node().node_info().kind;
 
-    // pick random edge
-    int next_index = random_int(0, node().num_edges());
-    this->node(node()[next_index].to());
+  if (to_seconds(t_passed_) >= 1) {
+
+	std::cout << this->node().node_info().kind << " ";
+	m_pStateMachine_->Update();
+	
     t_passed_ = from_seconds(0);
   }
   // laat ook even zien welke varkentjes hij ruikt
@@ -38,6 +37,10 @@ void shark::act(delta_time dt) {
   //  std::cout << "Smelled a pig at " << a.location().x() << ", "
   //            << a.location().y() << "\n";
   //}
+}
+
+void shark::resetTired() {
+	tired_ = 0;
 }
 
 } // namespace pigisland

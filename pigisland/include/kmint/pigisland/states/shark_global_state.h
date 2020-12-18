@@ -10,10 +10,12 @@ namespace kmint
 			class SharkGlobalState : public State
 			{
 			public:
-				SharkGlobalState(shark & shark) : m_shark_(shark) {}
+				SharkGlobalState(kmint::map::map_graph& g, shark & shark) : m_shark_(shark), graph_{ g } {}
 				void Enter() override;
 				void Execute() override;
 				void Exit() override;
+
+				kmint::map::map_graph& graph_;
 			protected:
 				shark & m_shark_;
 			};
