@@ -14,32 +14,25 @@ namespace kmint
 		{
 			void SharkHuntState::Enter()
 			{
-				std::cout << "SharkHuntState::Enter()" << std::endl;
-				// laat ook even zien welke varkentjes hij ruikt
-				//TODO TESTEN
-				for (auto i = m_shark_.begin_perceived(); i != m_shark_.end_perceived(); ++i) {
-					auto &a = *i;
+				//std::cout << "SharkHuntState::Enter()" << std::endl;
 
-					if (dynamic_cast<pig *>(&a)) {
-						std::cout << "Smelled a pig at " << a.location().x() << ", " << a.location().y() << "\n";
-
-						map::map_node* node = &graph_[0];
-						std::for_each(graph_.begin(), graph_.end(), [&](map::map_node &n)
-						{
-							if (math::distance(n.location(), a.location()) < math::distance(node->location(), a.location()))
-							{
-								node = &n;
-							}
-						});
-
-						path_to_pig_ = a_star_.search(m_shark_.node(), *node);
+				auto &a = *last_smelled_pig_;
+				map::map_node* node = &graph_[0];
+				std::for_each(graph_.begin(), graph_.end(), [&](map::map_node &n)
+				{
+					if (math::distance(n.location(), a.location()) < math::distance(node->location(), a.location()))
+					{
+						node = &n;
 					}
-				}
+				});
+
+				path_to_pig_ = a_star_.search(m_shark_.node(), *node);
 			}
 
 			void SharkHuntState::Execute()
 			{
-				std::cout << "SharkHuntState::Execute()" << std::endl;
+				//std::cout << "SharkHuntState::Execute()" << std::endl;
+
 				if (!path_to_pig_.empty())
 				{
 					std::size_t id = path_to_pig_.front()->node_id();
@@ -56,13 +49,18 @@ namespace kmint
 				else
 				{
 					std::cout << "Shark Reached Last Smelled Pig Position \n";
-					m_shark_.getFSM().ChangeState(new SharkWanderState(m_shark_));
+					m_shark_.getFSM().ChangeState(new SharkWanderState(graph_, m_shark_));
 				}
 			}
 
 			void SharkHuntState::Exit()
 			{
 				//std::cout << "SharkHuntState::Exit()" << std::endl;
+				a_star_.untag_nodes();
+			}
+
+			std::string SharkHuntState::Name() {
+				return "SharkHuntState";
 			}
 		}
 	}

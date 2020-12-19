@@ -1,14 +1,14 @@
 -- States
 
 Knabbel 
--Global
--Wander (ruikt geen varkentje meer)
+*-Global
+*-Wander (ruikt geen varkentje meer)
 -Afraid (binnen straal van 100 pixels van boot, dan dwaal voor 10 stappen en eet geen varkens)
--Hunt (ruikt varken en gaat naar locatie van op dat moment)
+*-Hunt (ruikt varken en gaat naar locatie van op dat moment)
 -Tired (terug naar rustplaats en bij aankomst worden nieuwe varkenspopulatie gemaakt)
 
 Porcus Vincit (boot)
--Global
+*-Global
 -Wander (dwaalt rond en pakt varkentjes op onderweg, en raakt langzaam 1 punt beschadigd aan de lak per beurt)
 -Repair (lak volledig beschadigd dus, moet aanmeren voor onderhoud)
 

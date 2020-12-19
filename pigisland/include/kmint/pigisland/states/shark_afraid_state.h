@@ -14,6 +14,8 @@ namespace kmint
 				void Enter() override;
 				void Execute() override;
 				void Exit() override;
+				std::string Name() override;
+
 			protected:
 				shark & m_shark_;
 			};

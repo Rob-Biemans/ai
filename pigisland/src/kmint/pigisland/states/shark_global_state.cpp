@@ -15,7 +15,7 @@ namespace kmint
 
 			void SharkGlobalState::Execute()
 			{
-				std::cout << "Shark tired level at " << m_shark_.getTired() << "%\n";
+				//std::cout << "Shark tired level at " << m_shark_.getTired() << "%\n";
 				if (m_shark_.getTired() >= 100) {
 					m_shark_.getFSM().ChangeState(new SharkTiredState(graph_, m_shark_));
 				}
@@ -27,6 +27,10 @@ namespace kmint
 			void SharkGlobalState::Exit()
 			{
 
+			}
+
+			std::string SharkGlobalState::Name() {
+				return "SharkGlobalState";
 			}
 		}
 	}

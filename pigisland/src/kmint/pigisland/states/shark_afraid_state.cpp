@@ -23,6 +23,10 @@ namespace kmint
 			{
 				//std::cout << "SharkAfraidState::Exit()" << std::endl;
 			}
+
+			std::string SharkAfraidState::Name() {
+				return "SharkAfraidState";
+			}
 		}
 	}
 }

@@ -21,6 +21,10 @@ namespace kmint
 			{
 
 			}
+
+			std::string BoatGlobalState::Name() {
+				return "BoatGlobalState";
+			}
 		}
 	}
 }

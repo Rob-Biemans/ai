@@ -16,6 +16,7 @@ namespace kmint
 				virtual void Enter() = 0;
 				virtual void Execute() = 0;
 				virtual void Exit() = 0;
+				virtual std::string Name() = 0;
 			};
 		}
 	}

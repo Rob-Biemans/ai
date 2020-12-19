@@ -14,6 +14,7 @@ namespace kmint
 				void Enter() override;
 				void Execute() override;
 				void Exit() override;
+				std::string Name() override;
 
 				kmint::map::map_graph& graph_;
 			protected:

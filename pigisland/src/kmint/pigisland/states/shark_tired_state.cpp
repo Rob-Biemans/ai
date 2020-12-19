@@ -14,6 +14,9 @@ namespace kmint
 			void SharkTiredState::Enter()
 			{
 				std::cout << "SharkTiredState::Enter()" << std::endl;
+
+				m_shark_.empty_perceived();
+
 				path_to_resting_place_ = a_star_.search(m_shark_.node(), find_node_of_kind(graph_, m_shark_.getRestingPlaceChar()));
 			}
 
@@ -36,7 +39,7 @@ namespace kmint
 				else
 				{
 					std::cout << "Shark Reached resting place \n";
-					m_shark_.getFSM().ChangeState(new SharkWanderState(m_shark_));
+					m_shark_.getFSM().ChangeState(new SharkWanderState(graph_, m_shark_));
 				}
 			}
 
@@ -45,6 +48,10 @@ namespace kmint
 				std::cout << "SharkTiredState::Exit()" << std::endl;
 				a_star_.untag_nodes();
 				m_shark_.resetTired();
+			}
+
+			std::string SharkTiredState::Name() {
+				return "SharkTiredState";
 			}
 		}
 	}

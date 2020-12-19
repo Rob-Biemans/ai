@@ -23,6 +23,10 @@ namespace kmint
 			{
 				//std::cout << "BoatWanderState::Exit()" << std::endl;
 			}
+
+			std::string BoatWanderState::Name() {
+				return "BoatWanderState";
+			}
 		}
 	}
 }

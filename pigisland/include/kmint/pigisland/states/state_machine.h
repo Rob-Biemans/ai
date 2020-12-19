@@ -75,6 +75,10 @@ namespace kmint
 				State& CurrentState() const { return *m_pCurrentState; }
 				State& GlobalState() const { return *m_pGlobalState; }
 				State& PreviousState() const { return *m_pPreviousState; }
+
+				bool isInState(std::string name) const {
+					return m_pCurrentState->Name() == name;
+				};
 			};
 		}
 	}

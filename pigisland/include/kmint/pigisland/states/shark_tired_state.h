@@ -14,6 +14,7 @@ namespace kmint
 				void Enter() override;
 				void Execute() override;
 				void Exit() override;
+				std::string Name() override;
 
 				std::queue<const kmint::map::map_node*> path_to_resting_place_;
 				kmint::map::map_graph& graph_;

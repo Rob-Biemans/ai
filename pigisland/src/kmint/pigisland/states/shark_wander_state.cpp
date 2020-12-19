@@ -1,5 +1,7 @@
 #pragma once
 #include "kmint/pigisland/states/shark_wander_state.h"
+#include "kmint/pigisland/states/shark_hunt_state.h"
+#include "kmint/pigisland/pig.hpp"
 #include "kmint/random.hpp"
 #include <string>
 #include <iostream>
@@ -12,26 +14,35 @@ namespace kmint
 		{
 			void SharkWanderState::Enter()
 			{
-				std::cout << "SharkWanderState::Enter()" << std::endl;
+				//std::cout << "SharkWanderState::Enter()" << std::endl;
+				m_shark_.empty_perceived();
 			}
 
 			void SharkWanderState::Execute()
 			{
-				std::cout << "SharkWanderState::Execute()" << std::endl;
+				//std::cout << "SharkWanderState::Execute()" << std::endl;
+				
 				int next_index = random_int(0, m_shark_.node().num_edges());
 				m_shark_.node(m_shark_.node()[next_index].to());
 
-				// laat ook even zien welke varkentjes hij ruikt
 				for (auto i = m_shark_.begin_perceived(); i != m_shark_.end_perceived(); ++i) {
-					auto const &a = *i;
-					std::cout << "Smelled a pig at " << a.location().x() << ", "
-						<< a.location().y() << "\n";
+					auto &a = *i;
+
+					if (dynamic_cast<pig *>(&a) && !a.removed()) {
+						std::cout << "Smelled a pig at " << a.location().x() << ", " << a.location().y() << "\n";
+						m_shark_.getFSM().ChangeState(new SharkHuntState(graph_, m_shark_, &a));
+						break;
+					}
 				}
 			}
 
 			void SharkWanderState::Exit()
 			{
-				std::cout << "SharkWanderState::Exit()" << std::endl;
+				//std::cout << "SharkWanderState::Exit()" << std::endl;
+			}
+
+			std::string SharkWanderState::Name() {
+				return "SharkWanderState";
 			}
 		}
 	}

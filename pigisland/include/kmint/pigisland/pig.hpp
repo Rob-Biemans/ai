@@ -14,12 +14,12 @@ public:
   pig(math::vector2d location);
   const ui::drawable &drawable() const override { return drawable_; }
   // participates in collisions
-  bool incorporeal() const override { return false; }
+  bool incorporeal() const override { return true; }
+  bool perceivable() const override { return true; }
+  bool perceptive() const override { return true; }
 
   void move(math::vector2d delta) { location(location() + delta); }
   void act(delta_time dt) override;
-  bool perceivable() const override { return true; }
-  bool perceptive() const override { return true; }
 
 private:
   play::image_drawable drawable_;
