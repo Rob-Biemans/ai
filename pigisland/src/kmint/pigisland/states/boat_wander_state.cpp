@@ -11,7 +11,7 @@ namespace kmint
 		{
 			void BoatWanderState::Enter()
 			{
-				//std::cout << "BoatWanderState::Enter()" << std::endl;
+				std::cout << "BoatWanderState::Enter()" << std::endl;
 			}
 
 			void BoatWanderState::Execute()
@@ -21,7 +21,7 @@ namespace kmint
 
 			void BoatWanderState::Exit()
 			{
-				//std::cout << "BoatWanderState::Exit()" << std::endl;
+				std::cout << "BoatWanderState::Exit()" << std::endl;
 			}
 
 			std::string BoatWanderState::Name() {

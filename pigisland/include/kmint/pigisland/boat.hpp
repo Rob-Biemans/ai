@@ -37,6 +37,7 @@ private:
 
 	std::unique_ptr<states::StateMachine> m_pStateMachine_;
 	int damaged_ = 0;
+	int turns_to_wait_at_current_spot_ = 0;
 };
 
 } // namespace pigisland

@@ -22,13 +22,14 @@ namespace kmint
 
 			void SharkTiredState::Execute()
 			{
-				std::cout << "SharkTiredState::Execute()" << std::endl;
+				//std::cout << "SharkTiredState::Execute()" << std::endl;
 				if (!path_to_resting_place_.empty())
 				{
 					std::size_t id = path_to_resting_place_.front()->node_id();
 					int found_index = 0;
 					for (std::size_t i = 0; i < m_shark_.node().num_edges(); ++i) {
-						if (m_shark_.node()[i].to().node_id() == id) {
+						if (m_shark_.node()[i].to().node_id() == id) 
+						{
 							found_index = i;
 						}
 					}
@@ -38,7 +39,7 @@ namespace kmint
 				}
 				else
 				{
-					std::cout << "Shark Reached resting place \n";
+					//std::cout << "Shark Reached resting place \n";
 					m_shark_.getFSM().ChangeState(new SharkWanderState(graph_, m_shark_));
 				}
 			}
@@ -46,8 +47,8 @@ namespace kmint
 			void SharkTiredState::Exit()
 			{
 				std::cout << "SharkTiredState::Exit()" << std::endl;
-				a_star_.untag_nodes();
 				m_shark_.resetTired();
+				a_star_.untag_nodes();
 			}
 
 			std::string SharkTiredState::Name() {

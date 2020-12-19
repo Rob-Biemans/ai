@@ -21,14 +21,13 @@ namespace kmint
 			void SharkWanderState::Execute()
 			{
 				//std::cout << "SharkWanderState::Execute()" << std::endl;
-				
-				int next_index = random_int(0, m_shark_.node().num_edges());
-				m_shark_.node(m_shark_.node()[next_index].to());
-
+				m_shark_.goToNextRandomNode();
+		
 				for (auto i = m_shark_.begin_perceived(); i != m_shark_.end_perceived(); ++i) {
 					auto &a = *i;
 
-					if (dynamic_cast<pig *>(&a) && !a.removed()) {
+					if (dynamic_cast<pig *>(&a) && !a.removed()) 
+					{
 						std::cout << "Smelled a pig at " << a.location().x() << ", " << a.location().y() << "\n";
 						m_shark_.getFSM().ChangeState(new SharkHuntState(graph_, m_shark_, &a));
 						break;

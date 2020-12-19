@@ -25,24 +25,32 @@ shark::shark(map::map_graph &g, map::map_node &initial_node)
 }
 
 void shark::act(delta_time dt) {
-  t_passed_ += dt;
+	t_passed_ += dt;
 
-  if (m_pStateMachine_->isInState("SharkWanderState") || m_pStateMachine_->isInState("SharkHuntState")) {
-	  for (std::size_t ix{}; ix < num_colliding_actors(); ++ix) {
-		  auto &other = colliding_actor(ix);
+	if (to_seconds(t_passed_) >= 1) 
+	{
+		//std::cout << this->node().node_info().kind << " ";
+		m_pStateMachine_->Update();
+		t_passed_ = from_seconds(0);
+	}
 
-		  if (dynamic_cast<pig *>(&other)) {
-			  std::cout << "A pig has been eaten \n";
-			  other.remove();
-		  }
-	  }
-  }
+	for (std::size_t ix{}; ix < num_colliding_actors(); ++ix) {
+		auto &other = colliding_actor(ix);
 
-  if (to_seconds(t_passed_) >= 1) {
-	std::cout << this->node().node_info().kind << " ";
-	m_pStateMachine_->Update();
-    t_passed_ = from_seconds(0);
-  }
+		if (dynamic_cast<pig *>(&other)) 
+		{
+			if (m_pStateMachine_->isInState("SharkWanderState") || m_pStateMachine_->isInState("SharkHuntState")) 
+			{
+				std::cout << "A pig has been eaten \n";
+				other.remove();
+			}
+		}
+	}
+}
+
+void shark::goToNextRandomNode() {
+	int next_index = random_int(0, node().num_edges());
+	node(node()[next_index].to());
 }
 
 void shark::resetTired() {

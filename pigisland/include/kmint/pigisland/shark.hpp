@@ -26,7 +26,7 @@ public:
   bool perceptive() const override { return true; }
   // geeft het bereik aan waarbinnen een haai
   // andere actors kan waarnemen.
-  scalar perception_range() const override { return 200.f; }
+  scalar perception_range() const override { return 100.f; }
 
   states::StateMachine& getFSM() const {
 	  return *m_pStateMachine_;
@@ -39,6 +39,12 @@ public:
   int getTired() const { return tired_; }
   void addTired() { tired_++; }
   void resetTired();
+
+  int getForcedTurnsToWander() const { return turns_to_wander_; }
+  void decreaseForcedTurnToWanderByOne() { turns_to_wander_--; }
+  void set10ForcedTurnsToWander() { turns_to_wander_ = 10; }
+
+  void goToNextRandomNode();
 private:
   // hoeveel tijd is verstreken sinds de laatste beweging
   delta_time t_passed_{};
@@ -50,6 +56,8 @@ private:
   // K is rustplek van de haai
   char resting_place_char_ = 'K';
   int tired_ = 0;
+  int turns_to_wait_at_current_spot_ = 0;
+  int turns_to_wander_ = 0;
 };
 
 } // namespace pigisland

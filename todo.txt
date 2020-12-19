@@ -3,9 +3,9 @@
 Knabbel 
 *-Global
 *-Wander (ruikt geen varkentje meer)
--Afraid (binnen straal van 100 pixels van boot, dan dwaal voor 10 stappen en eet geen varkens)
+*-Afraid (binnen straal van 50 pixels van boot, dan dwaal voor 10 stappen en eet geen varkens)
 *-Hunt (ruikt varken en gaat naar locatie van op dat moment)
--Tired (terug naar rustplaats en bij aankomst worden nieuwe varkenspopulatie gemaakt)
+/-Tired (terug naar rustplaats en bij aankomst worden nieuwe varkenspopulatie gemaakt)
 
 Porcus Vincit (boot)
 *-Global

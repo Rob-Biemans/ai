@@ -14,7 +14,7 @@ namespace kmint
 		{
 			void SharkHuntState::Enter()
 			{
-				//std::cout << "SharkHuntState::Enter()" << std::endl;
+				std::cout << "SharkHuntState::Enter()" << std::endl;
 
 				auto &a = *last_smelled_pig_;
 				map::map_node* node = &graph_[0];
@@ -38,7 +38,8 @@ namespace kmint
 					std::size_t id = path_to_pig_.front()->node_id();
 					int found_index = 0;
 					for (std::size_t i = 0; i < m_shark_.node().num_edges(); ++i) {
-						if (m_shark_.node()[i].to().node_id() == id) {
+						if (m_shark_.node()[i].to().node_id() == id) 
+						{
 							found_index = i;
 						}
 					}
@@ -48,14 +49,13 @@ namespace kmint
 				}
 				else
 				{
-					std::cout << "Shark Reached Last Smelled Pig Position \n";
 					m_shark_.getFSM().ChangeState(new SharkWanderState(graph_, m_shark_));
 				}
 			}
 
 			void SharkHuntState::Exit()
 			{
-				//std::cout << "SharkHuntState::Exit()" << std::endl;
+				std::cout << "SharkHuntState::Exit()" << std::endl;
 				a_star_.untag_nodes();
 			}
 

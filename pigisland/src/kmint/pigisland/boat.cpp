@@ -23,7 +23,8 @@ namespace pigisland {
   void boat::act(delta_time dt) {
 	
     t_passed_ += dt;
-    if (to_seconds(t_passed_) >= 1) {
+    if (to_seconds(t_passed_) >= 1) 
+	{
 	  m_pStateMachine_->Update();
 
       // pick random edge
@@ -35,7 +36,8 @@ namespace pigisland {
 	// Boat helped Pig to board for safety
 	for (std::size_t ix{}; ix < num_colliding_actors(); ++ix) {
 		auto &other = colliding_actor(ix);
-		if (dynamic_cast<pig *>(&other)) {
+		if (dynamic_cast<pig *>(&other)) 
+		{
 			std::cout << "A pig safely climbed onto the boat \n";
 			other.remove();
 		}
