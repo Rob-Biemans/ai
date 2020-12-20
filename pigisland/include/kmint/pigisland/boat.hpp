@@ -29,6 +29,7 @@ public:
 	int getTotalDamaged() const { return damaged_; }
 	void addDamage() { damaged_++; }
 	void repairDamage(int dock, int value);
+	void goToNextRandomNode();
 private:
 	// hoeveel tijd is verstreken sinds de laatste beweging
 	delta_time t_passed_{};

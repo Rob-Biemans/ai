@@ -17,6 +17,7 @@ namespace kmint
 			void BoatWanderState::Execute()
 			{
 				//std::cout << "BoatWanderState::Execute()" << std::endl;
+				m_boat_.goToNextRandomNode();
 			}
 
 			void BoatWanderState::Exit()

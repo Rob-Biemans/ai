@@ -14,7 +14,7 @@ public:
   pig(math::vector2d location);
   const ui::drawable &drawable() const override { return drawable_; }
   // participates in collisions
-  bool incorporeal() const override { return true; }
+  bool incorporeal() const override { return false; }
   bool perceivable() const override { return true; }
   bool perceptive() const override { return true; }
 
@@ -24,6 +24,10 @@ public:
 private:
   play::image_drawable drawable_;
   math::vector2d v_{};
+
+  char maintenance_place_char_grain_island_ = '1'; // min 30, max 50
+  char maintenance_place_char_gras_island_ = '2';  // min 20, max 100
+  char maintenance_place_char_tree_island_ = '3';  // min 50, max 50
 };
 
 } // namespace pigisland

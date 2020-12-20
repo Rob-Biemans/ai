@@ -55,6 +55,8 @@ void shark::goToNextRandomNode() {
 
 void shark::resetTired() {
 	tired_ = 0;
+
+	//TODO RESET PIG POPULATION
 }
 
 } // namespace pigisland
