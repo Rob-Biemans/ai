@@ -33,7 +33,7 @@ namespace kmint
 							found_index = i;
 						}
 					}
-					m_shark_.node(m_shark_.node()[found_index].to());
+					m_shark_.moveToNextNode(found_index);
 
 					path_to_resting_place_.pop();
 				}

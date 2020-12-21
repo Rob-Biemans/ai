@@ -1,5 +1,6 @@
 #include "state.h"
 #include "../shark.hpp"
+#include "kmint/pigisland/a_star.hpp"
 
 namespace kmint 
 {

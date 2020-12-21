@@ -21,7 +21,6 @@ namespace kmint
 			{
 				//std::cout << "SharkAfraidState::Execute()" << std::endl;
 				m_shark_.goToNextRandomNode();
-
 				m_shark_.decreaseForcedTurnToWanderByOne();
 			}
 

@@ -30,6 +30,11 @@ public:
 	void addDamage() { damaged_++; }
 	void repairDamage(int dock, int value);
 	void goToNextRandomNode();
+	void moveToNextNode(int next_index);
+
+	void set4TurnsToWait();
+	int getTurnsToWait() const { return turns_to_wait_; }
+	void removeTurnsToWaitByOne();
 private:
 	// hoeveel tijd is verstreken sinds de laatste beweging
 	delta_time t_passed_{};
@@ -38,7 +43,11 @@ private:
 
 	std::unique_ptr<states::StateMachine> m_pStateMachine_;
 	int damaged_ = 0;
-	int turns_to_wait_at_current_spot_ = 0;
+	int turns_to_wait_ = 0;
+
+	char maintenance_place_char_grain_island_ = '1'; // min 30, max 50
+	char maintenance_place_char_gras_island_ = '2';  // min 20, max 100
+	char maintenance_place_char_tree_island_ = '3';  // min 50, max 50
 };
 
 } // namespace pigisland

@@ -6,7 +6,6 @@
 #include "kmint/primitives.hpp"
 
 #include "kmint/pigisland/states/state_machine.h"
-#include "kmint/pigisland/a_star.hpp"
 
 namespace kmint {
 namespace pigisland {
@@ -45,6 +44,11 @@ public:
   void set10ForcedTurnsToWander() { turns_to_wander_ = 10; }
 
   void goToNextRandomNode();
+  void moveToNextNode(int next_index);
+
+  void set4TurnsToWait();
+  int getTurnsToWait() const { return turns_to_wait_; }
+  void removeTurnsToWaitByOne();
 private:
   // hoeveel tijd is verstreken sinds de laatste beweging
   delta_time t_passed_{};
@@ -56,7 +60,7 @@ private:
   // K is rustplek van de haai
   char resting_place_char_ = 'K';
   int tired_ = 0;
-  int turns_to_wait_at_current_spot_ = 0;
+  int turns_to_wait_ = 0;
   int turns_to_wander_ = 0;
 };
 

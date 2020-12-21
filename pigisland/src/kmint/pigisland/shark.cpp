@@ -50,13 +50,37 @@ void shark::act(delta_time dt) {
 
 void shark::goToNextRandomNode() {
 	int next_index = random_int(0, node().num_edges());
-	node(node()[next_index].to());
+	moveToNextNode(next_index);
+}
+
+void shark::moveToNextNode(int next_index) {
+	if (getTurnsToWait() <= 0) 
+	{
+		node(node()[next_index].to());
+
+		if (node().node_info().kind == 'R') 
+		{
+			std::cout << "shark::set4TurnsToWait() \n";
+			set4TurnsToWait();
+		}
+	}
+	else {
+		removeTurnsToWaitByOne();
+	}
 }
 
 void shark::resetTired() {
 	tired_ = 0;
 
 	//TODO RESET PIG POPULATION
+}
+
+void shark::set4TurnsToWait() {
+	turns_to_wait_ = 4;
+}
+
+void shark::removeTurnsToWaitByOne() {
+	turns_to_wait_--;
 }
 
 } // namespace pigisland

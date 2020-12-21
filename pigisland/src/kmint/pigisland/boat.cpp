@@ -36,7 +36,29 @@ namespace pigisland {
 
   void boat::goToNextRandomNode() {
 	  int next_index = random_int(0, node().num_edges());
-	  node(node()[next_index].to());
+	  moveToNextNode(next_index);
+  }
+
+  void boat::moveToNextNode(int next_index) {
+	  if (getTurnsToWait() <= 0) {
+		  node(node()[next_index].to());
+
+		  if (node().node_info().kind == 'R') {
+			  std::cout << "boat::set4TurnsToWait() \n";
+			  set4TurnsToWait();
+		  }
+	  }
+	  else {
+		  removeTurnsToWaitByOne();
+	  }
+  }
+
+  void boat::set4TurnsToWait() {
+	  turns_to_wait_ = 4;
+  }
+
+  void boat::removeTurnsToWaitByOne() {
+	  turns_to_wait_--;
   }
 } // namespace pigisland
 } // namespace kmint

@@ -9,12 +9,12 @@ Knabbel
 
 Porcus Vincit (boot)
 *-Global
--Wander (dwaalt rond en pakt varkentjes op onderweg, en raakt langzaam 1 punt beschadigd aan de lak per beurt)
+*-Wander (dwaalt rond en pakt varkentjes op onderweg, en raakt langzaam 1 punt beschadigd aan de lak per beurt)
 -Repair (lak volledig beschadigd dus, moet aanmeren voor onderhoud)
 
 -----
 
-- Haai en Boot bewegen zich 4x zo langzaam in rotsgebieden
+*- Haai en Boot bewegen zich 4x zo langzaam in rotsgebieden
 - Varkentjes bewegen zich vrij over het scherm*
 - Varkentjes kunnen niet uit scherm bewegen
 - Varkentjes kunnen niet op de graseilanden of pieren komen\

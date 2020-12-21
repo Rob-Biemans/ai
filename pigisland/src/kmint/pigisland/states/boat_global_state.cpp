@@ -16,14 +16,17 @@ namespace kmint
 
 			void BoatGlobalState::Execute()
 			{
-				//std::cout << "Shark tired level at " << m_shark_.getTired() << "%\n";
-				if (m_boat_.getTotalDamaged() >= 100 && !m_boat_.getFSM().isInState("BoatMaintenanceState"))
+				//std::cout << "Boat damaged level at " << m_boat_.getTotalDamaged() << "%\n";
+				if (!m_boat_.getFSM().isInState("BoatMaintenanceState"))
 				{
-					m_boat_.getFSM().ChangeState(new BoatMaintenanceState(graph_, m_boat_));
-				}
-				else if (!m_boat_.getFSM().isInState("BoatMaintenanceState"))
-				{
-					m_boat_.addDamage();
+					if (m_boat_.getTotalDamaged() >= 100)
+					{
+						m_boat_.getFSM().ChangeState(new BoatMaintenanceState(graph_, m_boat_));
+					}
+					else
+					{
+						m_boat_.addDamage();
+					}
 				}
 
 				for (std::size_t ix{}; ix < m_boat_.num_colliding_actors(); ++ix) {

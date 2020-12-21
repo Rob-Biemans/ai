@@ -22,7 +22,7 @@ namespace kmint
 			{
 				//std::cout << "SharkWanderState::Execute()" << std::endl;
 				m_shark_.goToNextRandomNode();
-		
+
 				for (auto i = m_shark_.begin_perceived(); i != m_shark_.end_perceived(); ++i) {
 					auto &a = *i;
 
