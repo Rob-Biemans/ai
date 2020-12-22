@@ -19,6 +19,7 @@ add_executable(pigisland
   src/kmint/pigisland/boat.cpp
   src/kmint/pigisland/pig.cpp
   src/kmint/pigisland/a_star.cpp
+  src/kmint/pigisland/steering_behaviors.cpp
   src/kmint/pigisland/states/shark_global_state.cpp
   src/kmint/pigisland/states/shark_wander_state.cpp
   src/kmint/pigisland/states/shark_afraid_state.cpp
@@ -26,8 +27,7 @@ add_executable(pigisland
   src/kmint/pigisland/states/shark_tired_state.cpp
   src/kmint/pigisland/states/boat_global_state.cpp
   src/kmint/pigisland/states/boat_wander_state.cpp
-  src/kmint/pigisland/states/boat_maintenance_state.cpp
-  src/kmint/pigisland/steering_behaviors.cpp)
+  src/kmint/pigisland/states/boat_maintenance_state.cpp)
 
 target_compile_features(pigisland PUBLIC cxx_std_17)
 target_link_libraries(pigisland PRIVATE kmint)
