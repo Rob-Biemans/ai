@@ -33,16 +33,16 @@ public:
   math::vector2d velocity() const { v_; }
 private:
   play::image_drawable drawable_;
-  SteeringBehaviors steeringBehaviors_ = new SteeringBehaviors(*this);
+  //SteeringBehaviors steeringBehaviors_ = new SteeringBehaviors(*this);
   math::vector2d v_{};
   math::vector2d heading_{};
   math::vector2d side_{};
 
-  float mass_;
-  float maxSpeed_;
-  float maxForce_;
-  float maxTurnRate_;
-  bool isTagged_;
+  float mass_ = 1;
+  float maxSpeed_ = 40;
+  float maxForce_ = 100;
+  float maxTurnRate_ = 100;
+  bool isTagged_ = false;
 };
 
 } // namespace pigisland

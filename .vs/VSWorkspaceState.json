@@ -9,9 +9,7 @@
     "\\pigisland\\resources",
     "\\pigisland\\src",
     "\\pigisland\\src\\kmint",
-    "\\pigisland\\src\\kmint\\pigisland",
-    "\\pigisland\\src\\kmint\\pigisland\\states"
+    "\\pigisland\\src\\kmint\\pigisland"
   ],
-  "SelectedNode": "\\pigisland\\include\\kmint\\pigisland\\states\\state.h",
   "PreviewInSolutionExplorer": false
 }
