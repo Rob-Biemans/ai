@@ -21,7 +21,16 @@ namespace pigisland {
 			kmint::math::vector2d alignment(std::vector<pig *>& neighbors);
 
 			kmint::math::vector2d wallAvoidance(const std::vector<Wall2D>& walls);
-			void SteeringBehaviors::CreateFeelers();
+			void createFeelers();
+			void vec2DRotateAroundOrigin(kmint::math::vector2d& v, double ang);
+			bool lineIntersection2D(kmint::math::vector2d A,
+				kmint::math::vector2d B,
+				kmint::math::vector2d C,
+				kmint::math::vector2d D,
+				double& dist,
+				kmint::math::vector2d& point);
+			double vec2DDistance(const kmint::math::vector2d &v1, const kmint::math::vector2d &v2);
+			double vec2DDistanceSq(const kmint::math::vector2d &v1, const kmint::math::vector2d &v2);
 
 			kmint::math::vector2d normalize(kmint::math::vector2d target);
 			double calcVectorLength(kmint::math::vector2d target);

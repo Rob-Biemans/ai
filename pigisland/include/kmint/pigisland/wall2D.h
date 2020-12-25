@@ -8,6 +8,14 @@ namespace pigisland {
 		public:
 			Wall2D() {}
 
+			Wall2D(kmint::math::vector2d A, kmint::math::vector2d B) : vA(A), vB(B)
+			{
+				calculateNormal();
+			}
+
+			Wall2D(kmint::math::vector2d A, kmint::math::vector2d B, kmint::math::vector2d N) :vA(A), vB(B), vN(N)
+			{ }
+
 			kmint::math::vector2d From() const { return vA; }
 			void SetFrom(kmint::math::vector2d  v) { vA = v; calculateNormal(); }
 

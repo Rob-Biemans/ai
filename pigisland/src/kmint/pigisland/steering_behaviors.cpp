@@ -1,4 +1,5 @@
 #include "kmint/pigisland/steering_behaviors.h"
+#include "kmint/pigisland/C2DMatrix.h"
 
 namespace kmint {
 namespace pigisland {
@@ -35,10 +36,10 @@ namespace pigisland {
 	kmint::math::vector2d SteeringBehaviors::flee(kmint::math::vector2d target) {
 
 		//only flee if the target is within 'panic distance'
-		//const double panicDistanceSq = 100.0 * 100.0;
-		//if (Vec2DDistanceSq(m_pig_.location(), target) > panicDistanceSq) {
-		//	return kmint::math::vector2d(0, 0);
-		//}
+		const double panicDistanceSq = 100.0 * 100.0;
+		if (vec2DDistanceSq(m_pig_.location(), target) > panicDistanceSq) {
+			return kmint::math::vector2d(0, 0);
+		}
 
 		kmint::math::vector2d desiredVelocity = normalize(m_pig_.location() - target) * m_pig_.maxSpeed();
 		return (desiredVelocity - m_pig_.velocity());
@@ -117,7 +118,7 @@ namespace pigisland {
 	}
 
 	kmint::math::vector2d SteeringBehaviors::wallAvoidance(const std::vector<Wall2D>& walls) {
-		CreateFeelers();
+		createFeelers();
 
 		double DistToThisIP = 0.0;
 		//TODO
@@ -132,54 +133,119 @@ namespace pigisland {
 		for (int flr = 0; flr < m_Feelers.size(); ++flr) {
 			//run through each wall checking for any intersection points
 			for (int w = 0; w < walls.size(); ++w) {
-				//TODO
-				//if (LineIntersection2D(m_pig_->Pos(), m_Feelers[flr], walls[w].From(), walls[w].To(), DistToThisIP, point))
-				//{
-				//	//is this the closest found so far? If so keep a record 
-				//	if (DistToThisIP < DistToClosestIP) 
-				//	{
-				//		DistToClosestIP = DistToThisIP;
-				//		ClosestWall = w;
-				//		ClosestPoint = point;
-				//	}
-				//}
+				if (lineIntersection2D(m_pig_.location(), m_Feelers[flr], walls[w].From(), walls[w].To(), DistToThisIP, point))
+				{
+					//is this the closest found so far? If so keep a record 
+					if (DistToThisIP < DistToClosestIP) 
+					{
+						DistToClosestIP = DistToThisIP;
+						ClosestWall = w;
+						ClosestPoint = point;
+					}
+				}
 			}
-		}
 
-		//if an intersection point has been detected, calculate a force that will direct the pig away
-		if (ClosestWall >= 0)
-		{
-			//calculate by what distance the projected position of the pig will overshoot the wall
-			//TODO
-			//kmint::math::vector2d overShoot = m_Feelers[flr] - ClosestPoint;
+			//if an intersection point has been detected, calculate a force that will direct the pig away
+			if (ClosestWall >= 0)
+			{
+				//calculate by what distance the projected position of the pig will overshoot the wall
+				kmint::math::vector2d overShoot = m_Feelers[flr] - ClosestPoint;
 
-			//create a force in the direction of the wall normal, with a magnitude of the overshoot 
-			//TODO
-			//steeringForce = walls[ClosestWall].Normal() * overShoot.Length();
+				//create a force in the direction of the wall normal, with a magnitude of the overshoot 
+				float length = sqrt(overShoot.x * overShoot.x + overShoot.y * overShoot.y);
+				steeringForce = walls[ClosestWall].Normal() * length;
+			}
 		}
 
 		return steeringForce;
 	}
 
-	void SteeringBehaviors::CreateFeelers()
+	bool SteeringBehaviors::lineIntersection2D(kmint::math::vector2d A,
+		kmint::math::vector2d B,
+		kmint::math::vector2d C,
+		kmint::math::vector2d D,
+		double& dist,
+		kmint::math::vector2d& point)
 	{
-		const double   HalfPi = 3.14159 / 2;
-		//may be needed to tweak
+
+		double rTop = (A.y - C.y)*(D.x - C.x) - (A.x - C.x)*(D.y - C.y);
+		double rBot = (B.x - A.x)*(D.y - C.y) - (B.y - A.y)*(D.x - C.x);
+
+		double sTop = (A.y - C.y)*(B.x - A.x) - (A.x - C.x)*(B.y - A.y);
+		double sBot = (B.x - A.x)*(D.y - C.y) - (B.y - A.y)*(D.x - C.x);
+
+		if ((rBot == 0) || (sBot == 0))
+		{
+			//lines are parallel
+			return false;
+		}
+
+		double r = rTop / rBot;
+		double s = sTop / sBot;
+
+		if ((r > 0) && (r < 1) && (s > 0) && (s < 1))
+		{
+			dist = vec2DDistance(A, B) * r;
+
+			point = A + r * (B - A);
+
+			return true;
+		}
+
+		else
+		{
+			dist = 0;
+
+			return false;
+		}
+	}
+
+	void SteeringBehaviors::createFeelers()
+	{
+		const double HalfPi = 3.14159 / 2;
 		float wallDetectionLength = 100;
 		//feeler pointing straight in front
 		m_Feelers[0] = m_pig_.location() + wallDetectionLength * m_pig_.heading();
 
 		//feeler to left
 		math::vector2d temp = m_pig_.heading();
-		//TODO
-		//vec2D_rotate_around_origin(temp, HalfPi * 3.5f);
+		vec2DRotateAroundOrigin(temp, HalfPi * 3.5f);
 		m_Feelers[1] = m_pig_.location() + wallDetectionLength / 2.0f * temp;
 
 		//feeler to right
 		temp = m_pig_.heading();
-		//TODO
-		//vec2D_rotate_around_origin(temp, HalfPi * 0.5f);
+		vec2DRotateAroundOrigin(temp, HalfPi * 0.5f);
 		m_Feelers[2] = m_pig_.location() + wallDetectionLength / 2.0f * temp;
+	}
+
+	void SteeringBehaviors::vec2DRotateAroundOrigin(kmint::math::vector2d& v, double ang)
+	{
+		//create a transformation matrix
+		C2DMatrix mat;
+
+		//rotate
+		mat.Rotate(ang);
+
+		//now transform the object's vertices
+		mat.TransformVector2Ds(v);
+	}
+
+	double SteeringBehaviors::vec2DDistance(const kmint::math::vector2d &v1, const kmint::math::vector2d &v2)
+	{
+
+		double ySeparation = v2.y - v1.y;
+		double xSeparation = v2.x - v1.x;
+
+		return sqrt(ySeparation*ySeparation + xSeparation * xSeparation);
+	}
+
+	double SteeringBehaviors::vec2DDistanceSq(const kmint::math::vector2d &v1, const kmint::math::vector2d &v2)
+	{
+
+		double ySeparation = v2.y - v1.y;
+		double xSeparation = v2.x - v1.x;
+
+		return ySeparation * ySeparation + xSeparation * xSeparation;
 	}
 }
 }
