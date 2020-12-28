@@ -5,12 +5,57 @@ namespace kmint {
 namespace pigisland {
 
 	float SteeringBehaviors::randomFloat(float min, float max) {
-		static std::default_random_engine e;
-		static std::uniform_real_distribution<float> dis(min, max);
-		return dis(e);
+		return random_scalar(min, max);
 	}
 
-	kmint::math::vector2d SteeringBehaviors::seek(kmint::math::vector2d target) {
+	kmint::math::vector2d SteeringBehaviors::wander(pig& m_pig_) {
+
+		float r = random_scalar(0, RAND_MAX);
+		//first, add a small random vector to the target’s position (RandomClamped
+		//returns a value between -1 and 1)
+		wanderTarget += kmint::math::vector2d(r * wanderJitter, r * wanderJitter);
+
+		//reproject this new vector back on to a unit circle
+		wanderTarget = normalize(wanderTarget);
+
+		//increase the length of the vector to the same as the radius
+		//of the wander circle
+		wanderTarget *= wanderRadius;
+
+		//move the target into a position WanderDist in front of the agent
+		kmint::math::vector2d target = wanderTarget + kmint::math::vector2d(wanderDistance, 0);
+
+		//project the target into world space
+		kmint::math::vector2d Target = pointToWorldSpace(target, m_pig_.heading(), m_pig_.side(), m_pig_.location());
+
+		//and steer towards it
+		return Target - m_pig_.location();
+	}
+
+	kmint::math::vector2d SteeringBehaviors::pointToWorldSpace(const kmint::math::vector2d& point,
+		const kmint::math::vector2d& heading,
+		const kmint::math::vector2d& side,
+		const kmint::math::vector2d& position) {
+
+		//make a copy of the point
+		kmint::math::vector2d TransPoint = point;
+
+		//create a transformation matrix
+		C2DMatrix matTransform;
+
+		//rotate
+		matTransform.Rotate(heading, side);
+
+		//and translate
+		matTransform.Translate(position.x(), position.y());
+
+		//now transform the vertices
+		matTransform.TransformVector2Ds(TransPoint);
+
+		return TransPoint;
+	}
+
+	kmint::math::vector2d SteeringBehaviors::seek(kmint::math::vector2d target, pig& m_pig_) {
 		kmint::math::vector2d desiredVelocity = normalize(target - m_pig_.location()) * m_pig_.maxSpeed();
 
 		return (desiredVelocity - m_pig_.velocity());
@@ -19,7 +64,7 @@ namespace pigisland {
 	
 	kmint::math::vector2d SteeringBehaviors::normalize(kmint::math::vector2d target)
 	{
-		double vector_length = calcVectorLength(target);
+		float vector_length = calcVectorLength(target);
 
 		if (vector_length > std::numeric_limits<double>::epsilon())
 		{
@@ -29,11 +74,15 @@ namespace pigisland {
 		return target;
 	}
 
-	double SteeringBehaviors::calcVectorLength(kmint::math::vector2d target) {
+	kmint::math::vector2d SteeringBehaviors::perp(kmint::math::vector2d target) {
+		return kmint::math::vector2d(-target.y(), target.x());
+	}
+
+	float SteeringBehaviors::calcVectorLength(kmint::math::vector2d target) {
 		return std::sqrt(std::pow(target.x(), 2) + std::pow(target.y(), 2));
 	}
 
-	kmint::math::vector2d SteeringBehaviors::flee(kmint::math::vector2d target) {
+	kmint::math::vector2d SteeringBehaviors::flee(kmint::math::vector2d target, pig& m_pig_) {
 
 		//only flee if the target is within 'panic distance'
 		const double panicDistanceSq = 100.0 * 100.0;
@@ -45,14 +94,15 @@ namespace pigisland {
 		return (desiredVelocity - m_pig_.velocity());
 	}
 	
-	kmint::math::vector2d SteeringBehaviors::cohesion(std::vector<pig *>& neighbors) {
+	kmint::math::vector2d SteeringBehaviors::cohesion(std::vector<pig *>& neighbors, pig& m_pig_) {
 		kmint::math::vector2d SteeringForce;
 
 		for (int a = 0; a < neighbors.size(); ++a) {
+			auto &other = *neighbors[a];
 			//make sure this agent isn't included in the calculations and that
 			//the agent being examined is close enough. 
-			if ((neighbors[a] != &m_pig_) && neighbors[a]->isTagged()) {
-				kmint::math::vector2d ToAgent = m_pig_.location() - neighbors[a]->location();
+			if ((dynamic_cast<pig *>(&other)) && other.isTagged()) {
+				kmint::math::vector2d ToAgent = m_pig_.location() - other.location();
 			
 				//scale the force inversely proportional to the agent's distance 
 				//from its neighbor.
@@ -63,16 +113,16 @@ namespace pigisland {
 		return SteeringForce;
 	}
 
-	kmint::math::vector2d SteeringBehaviors::separation(std::vector<pig *>& neighbors) {
+	kmint::math::vector2d SteeringBehaviors::separation(std::vector<pig *>& neighbors, pig& m_pig_) {
 		kmint::math::vector2d SteeringForce;
 
 		for (int a = 0; a < neighbors.size(); ++a) {
-
+			auto &other = *neighbors[a];
 			//make sure this agent isn't included in the calculations and that 
 			//the agent being examined is close enough.
-			if ((neighbors[a] != &m_pig_) && neighbors[a]->isTagged()) 
+			if ((dynamic_cast<pig *>(&other)) && other.isTagged())
 			{
-				kmint::math::vector2d ToAgent = m_pig_.location() - neighbors[a]->location();
+				kmint::math::vector2d ToAgent = m_pig_.location() - other.location();
 			
 				//scale the force inversely proportional to the agent's distance from its neighbor
 				SteeringForce += normalize(ToAgent) / (ToAgent.x(), ToAgent.y());
@@ -82,16 +132,17 @@ namespace pigisland {
 		return SteeringForce;
 	}
 	
-	kmint::math::vector2d SteeringBehaviors::alignment(std::vector<pig *>& neighbors) {
+	kmint::math::vector2d SteeringBehaviors::alignment(std::vector<pig *> &neighbors, pig& m_pig_) {
 		kmint::math::vector2d averageHeading;
 
 		int NeighborCount = 0;
 
 		for (int a = 0; a < neighbors.size(); ++a) {
+			auto &other = *neighbors[a];
 			//make sure *this* agent isn't included in the calculations and that 
 			//the agent being examined is close enough 
-			if ((neighbors[a] != &m_pig_) && neighbors[a]->isTagged()) {
-				averageHeading += neighbors[a]->heading();
+			if ((dynamic_cast<pig *>(&other)) && other.isTagged()) {
+				averageHeading += other.heading();
 				++NeighborCount;
 			}
 		}
@@ -107,21 +158,31 @@ namespace pigisland {
 		return averageHeading;
 	}
 	
-	void SteeringBehaviors::calculate() {
-		kmint::math::vector2d SteeringForce;
+	kmint::math::vector2d SteeringBehaviors::calculate(pig& m_pig_) {
+		kmint::math::vector2d steeringForce;
+		std::vector<pig *> neighbors;
 
-		//SteeringForce += wander() * dWanderAmount;
+		for (auto i = m_pig_.begin_perceived(); i != m_pig_.end_perceived(); ++i) {
+			auto &a = *i;
+
+			if (dynamic_cast<pig *>(&a))
+			{
+				pig* p = static_cast<pig*>(&a);
+				neighbors.push_back(p);
+			}
+		}
+
+		steeringForce += wander(m_pig_);
 		//SteeringForce += obstacleAvoidance() * dObstacleAvoidanceAmount;
-		//SteeringForce += separation() * dSeparationAmount;
+		steeringForce += separation(neighbors, m_pig_) * 1;
 
-		//return SteeringForce.Truncate(MAX_STEERING_FORCE);
+		return steeringForce;
 	}
 
-	kmint::math::vector2d SteeringBehaviors::wallAvoidance(const std::vector<Wall2D>& walls) {
-		createFeelers();
+	kmint::math::vector2d SteeringBehaviors::wallAvoidance(const std::vector<Wall2D>& walls, pig& m_pig_) {
+		createFeelers(m_pig_);
 
 		double DistToThisIP = 0.0;
-		//TODO
 		double DistToClosestIP = 0;// MaxDouble;
 
 		int ClosestWall = -1;
@@ -152,7 +213,7 @@ namespace pigisland {
 				kmint::math::vector2d overShoot = m_Feelers[flr] - ClosestPoint;
 
 				//create a force in the direction of the wall normal, with a magnitude of the overshoot 
-				float length = sqrt(overShoot.x * overShoot.x + overShoot.y * overShoot.y);
+				float length = sqrt(overShoot.x() * overShoot.x() + overShoot.y() * overShoot.y());
 				steeringForce = walls[ClosestWall].Normal() * length;
 			}
 		}
@@ -168,11 +229,11 @@ namespace pigisland {
 		kmint::math::vector2d& point)
 	{
 
-		double rTop = (A.y - C.y)*(D.x - C.x) - (A.x - C.x)*(D.y - C.y);
-		double rBot = (B.x - A.x)*(D.y - C.y) - (B.y - A.y)*(D.x - C.x);
+		double rTop = (A.y() - C.y())*(D.x() - C.x()) - (A.x() - C.x())*(D.y() - C.y());
+		double rBot = (B.x() - A.x())*(D.y() - C.y()) - (B.y() - A.y())*(D.x() - C.x());
 
-		double sTop = (A.y - C.y)*(B.x - A.x) - (A.x - C.x)*(B.y - A.y);
-		double sBot = (B.x - A.x)*(D.y - C.y) - (B.y - A.y)*(D.x - C.x);
+		double sTop = (A.y() - C.y())*(B.x() - A.x()) - (A.x() - C.x())*(B.y() - A.y());
+		double sBot = (B.x() - A.x())*(D.y() - C.y()) - (B.y() - A.y())*(D.x() - C.x());
 
 		if ((rBot == 0) || (sBot == 0))
 		{
@@ -200,7 +261,7 @@ namespace pigisland {
 		}
 	}
 
-	void SteeringBehaviors::createFeelers()
+	void SteeringBehaviors::createFeelers(pig& m_pig_)
 	{
 		const double HalfPi = 3.14159 / 2;
 		float wallDetectionLength = 100;
@@ -233,8 +294,8 @@ namespace pigisland {
 	double SteeringBehaviors::vec2DDistance(const kmint::math::vector2d &v1, const kmint::math::vector2d &v2)
 	{
 
-		double ySeparation = v2.y - v1.y;
-		double xSeparation = v2.x - v1.x;
+		double ySeparation = v2.y() - v1.y();
+		double xSeparation = v2.x() - v1.x();
 
 		return sqrt(ySeparation*ySeparation + xSeparation * xSeparation);
 	}
@@ -242,10 +303,22 @@ namespace pigisland {
 	double SteeringBehaviors::vec2DDistanceSq(const kmint::math::vector2d &v1, const kmint::math::vector2d &v2)
 	{
 
-		double ySeparation = v2.y - v1.y;
-		double xSeparation = v2.x - v1.x;
+		double ySeparation = v2.y() - v1.y();
+		double xSeparation = v2.x() - v1.x();
 
 		return ySeparation * ySeparation + xSeparation * xSeparation;
+	}
+
+	kmint::math::vector2d SteeringBehaviors::truncate(kmint::math::vector2d target, double max)
+	{
+		if (this->calcVectorLength(target) > max)
+		{
+			kmint::math::vector2d value = this->normalize(target);
+
+			return value *= max;
+		}
+
+		return target;
 	}
 }
 }

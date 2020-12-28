@@ -6,7 +6,7 @@
 #include <tuple>
 #include <vector>
 
-#include "kmint/pigisland/steering_behaviors.h"
+#include "./steering_behaviors.h"
 
 namespace kmint {
 namespace pigisland {
@@ -29,11 +29,12 @@ public:
   float maxForce() const { return maxForce_; }
   float maxTurnRate() const { return maxTurnRate_; }
   math::vector2d heading() const { return heading_; }
+  math::vector2d side() const { return side_; }
   bool isTagged() const { return isTagged_; }
-  math::vector2d velocity() const { v_; }
+  math::vector2d velocity() const { return v_; }
+
 private:
   play::image_drawable drawable_;
-  //SteeringBehaviors steeringBehaviors_ = new SteeringBehaviors(*this);
   math::vector2d v_{};
   math::vector2d heading_{};
   math::vector2d side_{};

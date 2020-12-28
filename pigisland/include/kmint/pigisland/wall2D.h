@@ -1,4 +1,3 @@
-#pragma once
 #include "kmint/math/vector2d.hpp"
 
 namespace kmint {

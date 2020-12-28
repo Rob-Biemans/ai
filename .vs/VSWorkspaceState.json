@@ -6,10 +6,10 @@
     "\\pigisland\\include\\kmint",
     "\\pigisland\\include\\kmint\\pigisland",
     "\\pigisland\\include\\kmint\\pigisland\\states",
-    "\\pigisland\\resources",
     "\\pigisland\\src",
     "\\pigisland\\src\\kmint",
-    "\\pigisland\\src\\kmint\\pigisland"
+    "\\pigisland\\src\\kmint\\pigisland",
+    "\\pigisland\\src\\kmint\\pigisland\\states"
   ],
   "PreviewInSolutionExplorer": false
 }
