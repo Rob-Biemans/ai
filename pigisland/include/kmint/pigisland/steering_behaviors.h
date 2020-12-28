@@ -23,6 +23,7 @@ namespace pigisland {
 			double wanderRadius = 0.35;
 			double wanderDistance = 0.25;
 			double wanderJitter = 1.0;
+			std::vector<Wall2D> walls_;
 		public:
 			SteeringBehaviors() = default;
 
@@ -33,7 +34,8 @@ namespace pigisland {
 			kmint::math::vector2d separation(std::vector<pig *>& neighbors, pig& m_pig_);
 			kmint::math::vector2d alignment(std::vector<pig *>& neighbors, pig& m_pig_);
 
-			kmint::math::vector2d wallAvoidance(const std::vector<Wall2D>& walls, pig& m_pig_);
+			void calcWalls();
+			kmint::math::vector2d wallAvoidance(pig& m_pig_);
 			void createFeelers(pig& m_pig_);
 			void vec2DRotateAroundOrigin(kmint::math::vector2d& v, double ang);
 			bool lineIntersection2D(kmint::math::vector2d A,

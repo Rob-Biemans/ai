@@ -173,17 +173,90 @@ namespace pigisland {
 		}
 
 		steeringForce += wander(m_pig_);
-		//SteeringForce += obstacleAvoidance() * dObstacleAvoidanceAmount;
+		steeringForce += wallAvoidance(m_pig_) * 100000;
 		steeringForce += separation(neighbors, m_pig_) * 1;
 
 		return steeringForce;
 	}
 
-	kmint::math::vector2d SteeringBehaviors::wallAvoidance(const std::vector<Wall2D>& walls, pig& m_pig_) {
+	void SteeringBehaviors::calcWalls() {
+		std::vector<Wall2D> walls;
+		math::vector2d A = math::vector2d(0, 0);
+		math::vector2d B = math::vector2d(0, 0);
+
+		// Edges of screen
+		A = math::vector2d(768, 768);
+		B = math::vector2d(256, 768);
+		Wall2D edgeN = Wall2D(A, B);
+		walls.push_back(edgeN);
+
+		A = math::vector2d(1024, 220);
+		B = math::vector2d(1024, 548);
+		Wall2D edgeE = Wall2D(A, B);
+		walls.push_back(edgeE);
+
+		A = math::vector2d(256, 0);
+		B = math::vector2d(768, 0);
+		Wall2D edgeS = Wall2D(A, B);
+		walls.push_back(edgeS);
+
+		A = math::vector2d(0, 548);
+		B = math::vector2d(0, 220);
+		Wall2D edgeW = Wall2D(A, B);
+		walls.push_back(edgeW);
+
+		//Island NW
+		A = math::vector2d(255, 549);
+		B = math::vector2d(0, 514);
+		Wall2D nwS = Wall2D(A, B);
+		walls.push_back(nwS);
+
+		A = math::vector2d(255, 768);
+		B = math::vector2d(255, 549);
+		Wall2D nwE = Wall2D(A, B);
+		walls.push_back(nwE);
+
+		//Island NE
+		A = math::vector2d(1024, 549);
+		B = math::vector2d(769, 549);
+		Wall2D neS = Wall2D(A, B);
+		walls.push_back(neS);
+
+		A = math::vector2d(769, 549);
+		B = math::vector2d(769, 768);
+		Wall2D neW = Wall2D(A, B);
+		walls.push_back(neW);
+
+		//Island SE
+		A = math::vector2d(769, 219);
+		B = math::vector2d(1024, 219);
+		Wall2D seN = Wall2D(A, B);
+		walls.push_back(seN);
+
+		A = math::vector2d(769, 0);
+		B = math::vector2d(769, 219);
+		Wall2D seW = Wall2D(A, B);
+		walls.push_back(seW);
+
+		//Island SW
+		A = math::vector2d(0, 219);
+		B = math::vector2d(305, 219);
+		Wall2D swN = Wall2D(A, B);
+		walls.push_back(swN);
+
+		A = math::vector2d(305, 219);
+		B = math::vector2d(305, 0);
+		Wall2D swE = Wall2D(A, B);
+		walls.push_back(swE);
+
+		walls_ = walls;
+	}
+
+	kmint::math::vector2d SteeringBehaviors::wallAvoidance(pig& m_pig_) {
 		createFeelers(m_pig_);
 
 		double DistToThisIP = 0.0;
-		double DistToClosestIP = 0;// MaxDouble;
+		double DistToClosestIP = DBL_MAX;
 
 		int ClosestWall = -1;
 
@@ -193,8 +266,8 @@ namespace pigisland {
 
 		for (int flr = 0; flr < m_Feelers.size(); ++flr) {
 			//run through each wall checking for any intersection points
-			for (int w = 0; w < walls.size(); ++w) {
-				if (lineIntersection2D(m_pig_.location(), m_Feelers[flr], walls[w].From(), walls[w].To(), DistToThisIP, point))
+			for (int w = 0; w < walls_.size(); ++w) {
+				if (lineIntersection2D(m_pig_.location(), m_Feelers[flr], walls_[w].From(), walls_[w].To(), DistToThisIP, point))
 				{
 					//is this the closest found so far? If so keep a record 
 					if (DistToThisIP < DistToClosestIP) 
@@ -214,7 +287,7 @@ namespace pigisland {
 
 				//create a force in the direction of the wall normal, with a magnitude of the overshoot 
 				float length = sqrt(overShoot.x() * overShoot.x() + overShoot.y() * overShoot.y());
-				steeringForce = walls[ClosestWall].Normal() * length;
+				steeringForce = walls_[ClosestWall].Normal() * length;
 			}
 		}
 
