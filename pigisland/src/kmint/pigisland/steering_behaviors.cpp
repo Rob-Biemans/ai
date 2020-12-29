@@ -177,23 +177,63 @@ namespace pigisland {
 			}
 		}
 
-		steeringForce += wander(m_pig_);
+		steeringForce += wander(m_pig_) * 8;
 
-		force = wallAvoidance(m_pig_);
+		force = separation(neighbors, m_pig_) * 0.8 *m_pig_.getAttributes().getValues()[3];
 		accumulateForce(m_pig_, steeringForce, force);
-		force = seek(boatLocation, m_pig_) * m_pig_.getAttributes().getValues()[1];
+		force = alignment(neighbors, m_pig_) * 0.5 * m_pig_.getAttributes().getValues()[4];
 		accumulateForce(m_pig_, steeringForce, force);
-		force = flee(sharkLocation, m_pig_) * m_pig_.getAttributes().getValues()[0];
+		force = cohesion(neighbors, m_pig_) * 0.4 * m_pig_.getAttributes().getValues()[2];
 		accumulateForce(m_pig_, steeringForce, force);
-		
-		force = separation(neighbors, m_pig_) * m_pig_.getAttributes().getValues()[3];
+
+		force = wallAvoidance(m_pig_) * 1000;
 		accumulateForce(m_pig_, steeringForce, force);
-		force = alignment(neighbors, m_pig_) * m_pig_.getAttributes().getValues()[4];
+		force = seek(boatLocation, m_pig_) * 0.25 * m_pig_.getAttributes().getValues()[1];
 		accumulateForce(m_pig_, steeringForce, force);
-		force = cohesion(neighbors, m_pig_) * m_pig_.getAttributes().getValues()[2];
+		force = flee(sharkLocation, m_pig_) * 0.9 * m_pig_.getAttributes().getValues()[0];
 		accumulateForce(m_pig_, steeringForce, force);
 
 		return steeringForce;
+	}
+
+	void SteeringBehaviors::enforceNonPenetrationConstraint(pig& m_pig_)
+	{
+		std::vector<pig *> neighbors;
+		for (auto i = m_pig_.begin_perceived(); i != m_pig_.end_perceived(); ++i) {
+			auto &a = *i;
+
+			if (dynamic_cast<pig *>(&a))
+			{
+				pig* p = static_cast<pig*>(&a);
+				neighbors.push_back(p);
+			}
+		}
+
+		//iterate through all entities checking for any overlap of bounding radii
+		for (auto i = neighbors.begin(); i != neighbors.end(); ++i)
+		{
+			auto &a = *i;
+
+			//make sure we don't check against the individual
+			if (&m_pig_ == *i) continue;
+
+			//calculate the distance between the positions of the entities
+			kmint::math::vector2d ToEntity = m_pig_.location() - (a)->location();
+
+			float ToEntityLength = sqrt(ToEntity.x() * ToEntity.x() + ToEntity.y() * ToEntity.y());
+			double DistFromEachOther = ToEntityLength;
+
+			//if this distance is smaller than the sum of their radii then this
+			//entity must be moved away in the direction parallel to the
+			//ToEntity vector   
+			double AmountOfOverLap = 8 + 8 - DistFromEachOther;
+
+			if (AmountOfOverLap >= 0)
+			{
+				//move the entity a distance away equivalent to the amount of overlap.
+				m_pig_.move(m_pig_.location() + (ToEntity / DistFromEachOther) * AmountOfOverLap);
+			}
+		}//next entity
 	}
 
 	bool SteeringBehaviors::accumulateForce(pig& m_pig_, kmint::math::vector2d &RunningTot,

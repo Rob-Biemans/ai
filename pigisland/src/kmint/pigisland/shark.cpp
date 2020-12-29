@@ -83,5 +83,11 @@ void shark::removeTurnsToWaitByOne() {
 	turns_to_wait_--;
 }
 
+void shark::setColor(std::uint8_t r, std::uint8_t g, std::uint8_t b)
+{
+	graphics::color color{ r, g, b };
+	drawable_.set_tint(color);
+}
+
 } // namespace pigisland
 } // namespace kmint

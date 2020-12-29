@@ -62,6 +62,8 @@ namespace pigisland {
 
 			float randomFloat(float min, float max);
 			kmint::math::vector2d calculate(pig& m_pig_, kmint::math::vector2d boatLocation, kmint::math::vector2d sharkLocation);
+
+			void enforceNonPenetrationConstraint(pig& m_pig_);
 	};
 } // namespace pigisland
 } // namespace kmint

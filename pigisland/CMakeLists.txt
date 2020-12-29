@@ -21,6 +21,7 @@ add_executable(pigisland
   src/kmint/pigisland/a_star.cpp
   src/kmint/pigisland/steering_behaviors.cpp
   src/kmint/pigisland/genetical_algorithm.cpp
+  src/kmint/pigisland/memory.cpp
   src/kmint/pigisland/states/shark_global_state.cpp
   src/kmint/pigisland/states/shark_wander_state.cpp
   src/kmint/pigisland/states/shark_afraid_state.cpp

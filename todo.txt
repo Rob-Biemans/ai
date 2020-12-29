@@ -19,4 +19,4 @@ Porcus Vincit (boot)
 *- Varkentjes kunnen niet uit scherm bewegen
 *- Varkentjes kunnen niet op de graseilanden of pieren komen
 - Varkentjes beschikken over eigenschappen
-- Varkentjes beschikt over groeps gedrag (aan de hand van eigenschappen)
+*- Varkentjes beschikt over groeps gedrag (aan de hand van eigenschappen)

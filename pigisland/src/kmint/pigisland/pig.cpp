@@ -6,14 +6,12 @@ namespace kmint {
 	namespace pigisland {
 
 
-		pig::pig(math::vector2d location, Attributes attributes, pigisland::shark& shark, pigisland::boat& boat)
+	pig::pig(math::vector2d location, Attributes attributes, pigisland::shark& shark, pigisland::boat& boat)
 			: play::free_roaming_actor{ location },
 			drawable_{ *this, pig_image() }, attributes_{ attributes }, shark(shark), boat(boat) {
 
-	SteeringBehaviors steeringBehaviors;
-
-	v_ = math::vector2d(steeringBehaviors.randomFloat(-0.0008, 0.0008), steeringBehaviors.randomFloat(-0.0008, 0.00080));
-}
+		SteeringBehaviors steeringBehaviors;
+	}
 
 void pig::act(delta_time dt) {
 	SteeringBehaviors steeringBehaviors;
@@ -37,6 +35,8 @@ void pig::act(delta_time dt) {
 	 heading_ = steeringBehaviors.normalize(v_);
 	 side_ = steeringBehaviors.perp(heading_);
 	}
+
+	//steeringBehaviors.enforceNonPenetrationConstraint(*this);
 }
 
 } // namespace pigisland

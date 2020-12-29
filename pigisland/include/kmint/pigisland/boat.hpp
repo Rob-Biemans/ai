@@ -35,6 +35,8 @@ public:
 	void set4TurnsToWait();
 	int getTurnsToWait() const { return turns_to_wait_; }
 	void removeTurnsToWaitByOne();
+
+	void setColor(std::uint8_t r, std::uint8_t g, std::uint8_t b);
 private:
 	// hoeveel tijd is verstreken sinds de laatste beweging
 	delta_time t_passed_{};

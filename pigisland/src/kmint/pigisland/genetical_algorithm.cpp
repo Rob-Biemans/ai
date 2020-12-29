@@ -15,6 +15,11 @@ namespace pigisland {
 
 	void GeneticalAlgorithm::createNewGeneration(boat & boat, shark & shark) {
 		//TODO
+
+		// get surviving pigs
+		// use suriving pigs to collection and create new to reach 100
+
+		// use boat and shark to create new both from previous experience
 	}
 
 }

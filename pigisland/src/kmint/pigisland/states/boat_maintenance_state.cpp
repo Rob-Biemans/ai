@@ -14,6 +14,8 @@ namespace kmint
 			{
 				std::cout << "BoatMaintenanceState::Enter()" << std::endl;
 
+				//TODO dock based on % and learning
+
 				// Look for specific maintance dock node
 				map::map_node* node = &graph_[0];
 				std::for_each(graph_.begin(), graph_.end(), [&](map::map_node &n)

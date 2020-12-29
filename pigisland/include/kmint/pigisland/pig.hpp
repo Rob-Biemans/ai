@@ -46,7 +46,7 @@ private:
   math::vector2d side_{};
 
   float mass_ = 1;
-  float maxSpeed_ = 40;
+  float maxSpeed_ = 25;
   float maxForce_ = 100;
   float maxTurnRate_ = 100;
   bool isTagged_ = false;
