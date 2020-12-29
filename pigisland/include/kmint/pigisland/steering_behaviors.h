@@ -34,6 +34,8 @@ namespace pigisland {
 			kmint::math::vector2d separation(std::vector<pig *>& neighbors, pig& m_pig_);
 			kmint::math::vector2d alignment(std::vector<pig *>& neighbors, pig& m_pig_);
 
+			bool accumulateForce(pig& m_pig_, kmint::math::vector2d &RunningTot, kmint::math::vector2d ForceToAdd);
+
 			void calcWalls();
 			kmint::math::vector2d wallAvoidance(pig& m_pig_);
 			void createFeelers(pig& m_pig_);
@@ -59,7 +61,7 @@ namespace pigisland {
 				const kmint::math::vector2d& position);
 
 			float randomFloat(float min, float max);
-			kmint::math::vector2d calculate(pig& m_pig_);
+			kmint::math::vector2d calculate(pig& m_pig_, kmint::math::vector2d boatLocation, kmint::math::vector2d sharkLocation);
 	};
 } // namespace pigisland
 } // namespace kmint

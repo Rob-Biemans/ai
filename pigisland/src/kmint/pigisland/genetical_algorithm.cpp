@@ -9,7 +9,7 @@ namespace pigisland {
 
 		  auto locs = pigisland::random_pig_locations(100);
 		  for (auto loc : locs) {
-			  stage_->build_actor<pigisland::pig>(loc);
+			  stage_->build_actor<pigisland::pig>(loc, Attributes{}, shark, boat);
 		  }
 	}
 

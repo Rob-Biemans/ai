@@ -3,12 +3,12 @@
 #include "kmint/random.hpp"
 
 namespace kmint {
-namespace pigisland {
+	namespace pigisland {
 
 
-pig::pig(math::vector2d location)
-  : play::free_roaming_actor{location},
-	drawable_{ *this, pig_image() } {
+		pig::pig(math::vector2d location, Attributes attributes, pigisland::shark& shark, pigisland::boat& boat)
+			: play::free_roaming_actor{ location },
+			drawable_{ *this, pig_image() }, attributes_{ attributes }, shark(shark), boat(boat) {
 
 	SteeringBehaviors steeringBehaviors;
 
@@ -17,7 +17,7 @@ pig::pig(math::vector2d location)
 
 void pig::act(delta_time dt) {
 	SteeringBehaviors steeringBehaviors;
-	kmint::math::vector2d steeringForce = steeringBehaviors.calculate(*this);
+	kmint::math::vector2d steeringForce = steeringBehaviors.calculate(*this, boat.location(), shark.location());
 
 	//calculate the combined force from each steering behavior in the pigs list
 	kmint::math::vector2d acceleration = steeringForce / mass();

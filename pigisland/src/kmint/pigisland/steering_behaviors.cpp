@@ -162,7 +162,8 @@ namespace pigisland {
 		return averageHeading;
 	}
 	
-	kmint::math::vector2d SteeringBehaviors::calculate(pig& m_pig_) {
+	kmint::math::vector2d SteeringBehaviors::calculate(pig& m_pig_, kmint::math::vector2d boatLocation, kmint::math::vector2d sharkLocation) {
+		kmint::math::vector2d force;
 		kmint::math::vector2d steeringForce;
 		std::vector<pig *> neighbors;
 
@@ -177,10 +178,58 @@ namespace pigisland {
 		}
 
 		steeringForce += wander(m_pig_);
-		steeringForce += wallAvoidance(m_pig_);
-		steeringForce += separation(neighbors, m_pig_) * 1;
+
+		force = wallAvoidance(m_pig_);
+		accumulateForce(m_pig_, steeringForce, force);
+		force = seek(boatLocation, m_pig_) * m_pig_.getAttributes().getValues()[1];
+		accumulateForce(m_pig_, steeringForce, force);
+		force = flee(sharkLocation, m_pig_) * m_pig_.getAttributes().getValues()[0];
+		accumulateForce(m_pig_, steeringForce, force);
+		
+		force = separation(neighbors, m_pig_) * m_pig_.getAttributes().getValues()[3];
+		accumulateForce(m_pig_, steeringForce, force);
+		force = alignment(neighbors, m_pig_) * m_pig_.getAttributes().getValues()[4];
+		accumulateForce(m_pig_, steeringForce, force);
+		force = cohesion(neighbors, m_pig_) * m_pig_.getAttributes().getValues()[2];
+		accumulateForce(m_pig_, steeringForce, force);
 
 		return steeringForce;
+	}
+
+	bool SteeringBehaviors::accumulateForce(pig& m_pig_, kmint::math::vector2d &RunningTot,
+		kmint::math::vector2d ForceToAdd)
+	{
+
+		//calculate how much steering force the vehicle has used so far
+		float RunningTotLength = sqrt(RunningTot.x() * RunningTot.x() + RunningTot.y() * RunningTot.y());
+		double MagnitudeSoFar = RunningTotLength;
+
+		//calculate how much steering force remains to be used by this vehicle
+		double MagnitudeRemaining = m_pig_.maxForce() - MagnitudeSoFar;
+
+		//return false if there is no more force left to use
+		if (MagnitudeRemaining <= 0.0) return false;
+
+		//calculate the magnitude of the force we want to add
+		float ForceToAddLength = sqrt(ForceToAdd.x() * ForceToAdd.x() + ForceToAdd.y() * ForceToAdd.y());
+		double MagnitudeToAdd = ForceToAddLength;
+
+		//if the magnitude of the sum of ForceToAdd and the running total
+		//does not exceed the maximum force available to this vehicle, just
+		//add together. Otherwise add as much of the ForceToAdd vector is
+		//possible without going over the max.
+		if (MagnitudeToAdd < MagnitudeRemaining)
+		{
+			RunningTot += ForceToAdd;
+		}
+
+		else
+		{
+			//add it to the steering force
+			RunningTot += (normalize(ForceToAdd) * MagnitudeRemaining);
+		}
+
+		return true;
 	}
 
 	void SteeringBehaviors::calcWalls() {

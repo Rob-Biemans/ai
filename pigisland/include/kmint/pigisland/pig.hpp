@@ -6,14 +6,18 @@
 #include <tuple>
 #include <vector>
 
-#include "./steering_behaviors.h"
+#include "steering_behaviors.h"
+#include "attributes.hpp"
+
+#include "shark.hpp"
+#include "boat.hpp"
 
 namespace kmint {
 namespace pigisland {
 
 class pig : public play::free_roaming_actor {
 public:
-  pig(math::vector2d location);
+  pig(math::vector2d location, Attributes attributes, pigisland::shark& shark, pigisland::boat& boat);
   const ui::drawable &drawable() const override { return drawable_; }
   // participates in collisions
   bool incorporeal() const override { return false; }
@@ -33,6 +37,8 @@ public:
   bool isTagged() const { return isTagged_; }
   math::vector2d velocity() const { return v_; }
 
+  Attributes& getAttributes() { return attributes_; }
+
 private:
   play::image_drawable drawable_;
   math::vector2d v_{};
@@ -44,6 +50,10 @@ private:
   float maxForce_ = 100;
   float maxTurnRate_ = 100;
   bool isTagged_ = false;
+
+  Attributes attributes_;
+  shark& shark;
+  boat& boat;
 };
 
 } // namespace pigisland
