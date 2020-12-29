@@ -51,6 +51,7 @@ public:
   void removeTurnsToWaitByOne();
 
   void setColor(std::uint8_t r, std::uint8_t g, std::uint8_t b);
+  void removeColor();
 private:
   // hoeveel tijd is verstreken sinds de laatste beweging
   delta_time t_passed_{};

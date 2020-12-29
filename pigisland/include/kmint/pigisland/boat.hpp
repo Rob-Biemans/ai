@@ -10,6 +10,13 @@
 namespace kmint {
 namespace pigisland {
 
+struct Dock {
+	int id;
+	int min;
+	int max;
+	map::map_node * node;
+};
+
 class boat : public play::map_bound_actor {
 public:
 	boat(map::map_graph& g, map::map_node& initial_node);
@@ -37,6 +44,11 @@ public:
 	void removeTurnsToWaitByOne();
 
 	void setColor(std::uint8_t r, std::uint8_t g, std::uint8_t b);
+	void removeColor();
+	void findAndStoreMaintenancePlaces();
+
+	std::vector<Dock> getMaintenancesPlaces() { return maintenances_places_; }
+	
 private:
 	// hoeveel tijd is verstreken sinds de laatste beweging
 	delta_time t_passed_{};
@@ -47,9 +59,8 @@ private:
 	int damaged_ = 0;
 	int turns_to_wait_ = 0;
 
-	char maintenance_place_char_grain_island_ = '1'; // min 30, max 50
-	char maintenance_place_char_gras_island_ = '2';  // min 20, max 100
-	char maintenance_place_char_tree_island_ = '3';  // min 50, max 50
+	std::vector<Dock> maintenances_places_{};
+	map::map_graph& graph_;
 };
 
 } // namespace pigisland

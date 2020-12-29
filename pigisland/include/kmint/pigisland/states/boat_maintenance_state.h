@@ -21,6 +21,7 @@ namespace kmint
 				kmint::map::map_graph& graph_;
 				a_star a_star_;
 				kmint::map::map_node* selected_maintenance_dock_;
+				int dockNumber = 0;
 			protected:
 				boat & m_boat_;
 			};
