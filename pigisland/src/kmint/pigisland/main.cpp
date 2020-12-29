@@ -14,6 +14,8 @@
 #include <random>
 #include <vector>
 
+#include "kmint/pigisland/genetical_algorithm.h"
+
 using namespace kmint;
 
 int main() {
@@ -31,22 +33,27 @@ int main() {
   s.build_actor<play::background>(math::size(1024, 768),
                                   graphics::image{map.background_image()});
   s.build_actor<play::map_actor>(math::vector2d{0.f, 0.f}, map.graph());
-  s.build_actor<pigisland::boat>(graph,
-                                 pigisland::find_node_of_kind(graph, '1'));
-  s.build_actor<pigisland::shark>(graph,
-                                  pigisland::find_node_of_kind(graph, 'K'));
+  pigisland::boat & boat = s.build_actor<pigisland::boat>(graph, pigisland::find_node_of_kind(graph, '1'));
+  pigisland::shark & shark = s.build_actor<pigisland::shark>(graph, pigisland::find_node_of_kind(graph, 'K'));
 
-  auto locs = pigisland::random_pig_locations(100);
-  for (auto loc : locs) {
-    s.build_actor<pigisland::pig>(loc);
-  }
+  bool roundHasEnded = false;
+  pigisland::GeneticalAlgorithm geneticalAlgorithm{ s };
 
   // Maak een event_source aan (hieruit kun je alle events halen, zoals
   // toetsaanslagen)
   ui::events::event_source event_source{};
 
+  geneticalAlgorithm.createFirstGeneration(boat, shark);
+
   // main_loop stuurt alle actors aan.
   main_loop(s, window, [&](delta_time dt, loop_controls &ctl) {
+
+	 if (roundHasEnded)
+	 {
+		 roundHasEnded = false;
+		 geneticalAlgorithm.createNewGeneration(boat, shark);
+	 }
+
     // gebruik dt om te kijken hoeveel tijd versterken is
     // sinds de vorige keer dat deze lambda werd aangeroepen
     // loop controls is een object met eigenschappen die je kunt gebruiken om de
