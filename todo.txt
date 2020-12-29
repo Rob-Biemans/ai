@@ -15,8 +15,8 @@ Porcus Vincit (boot)
 -----
 
 *- Haai en Boot bewegen zich 4x zo langzaam in rotsgebieden
-- Varkentjes bewegen zich vrij over het scherm
-- Varkentjes kunnen niet uit scherm bewegen
-- Varkentjes kunnen niet op de graseilanden of pieren komen\
+*- Varkentjes bewegen zich vrij over het scherm
+*- Varkentjes kunnen niet uit scherm bewegen
+*- Varkentjes kunnen niet op de graseilanden of pieren komen
 - Varkentjes beschikken over eigenschappen
 - Varkentjes beschikt over groeps gedrag (aan de hand van eigenschappen)

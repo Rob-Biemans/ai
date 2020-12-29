@@ -4,6 +4,10 @@
 namespace kmint {
 namespace pigisland {
 
+	SteeringBehaviors::SteeringBehaviors() {
+		calcWalls();
+	}
+
 	float SteeringBehaviors::randomFloat(float min, float max) {
 		return random_scalar(min, max);
 	}
@@ -173,13 +177,14 @@ namespace pigisland {
 		}
 
 		steeringForce += wander(m_pig_);
-		steeringForce += wallAvoidance(m_pig_) * 100000;
+		steeringForce += wallAvoidance(m_pig_);
 		steeringForce += separation(neighbors, m_pig_) * 1;
 
 		return steeringForce;
 	}
 
 	void SteeringBehaviors::calcWalls() {
+		//1024, 768
 		std::vector<Wall2D> walls;
 		math::vector2d A = math::vector2d(0, 0);
 		math::vector2d B = math::vector2d(0, 0);
@@ -187,23 +192,23 @@ namespace pigisland {
 		// Edges of screen
 		A = math::vector2d(768, 768);
 		B = math::vector2d(256, 768);
-		Wall2D edgeN = Wall2D(A, B);
-		walls.push_back(edgeN);
+		Wall2D north = Wall2D(A, B);
+		walls.push_back(north);
 
 		A = math::vector2d(1024, 220);
 		B = math::vector2d(1024, 548);
-		Wall2D edgeE = Wall2D(A, B);
-		walls.push_back(edgeE);
+		Wall2D east = Wall2D(A, B);
+		walls.push_back(east);
 
 		A = math::vector2d(256, 0);
 		B = math::vector2d(768, 0);
-		Wall2D edgeS = Wall2D(A, B);
-		walls.push_back(edgeS);
+		Wall2D south = Wall2D(A, B);
+		walls.push_back(south);
 
 		A = math::vector2d(0, 548);
 		B = math::vector2d(0, 220);
-		Wall2D edgeW = Wall2D(A, B);
-		walls.push_back(edgeW);
+		Wall2D west = Wall2D(A, B);
+		walls.push_back(west);
 
 		//Island NW
 		A = math::vector2d(255, 549);

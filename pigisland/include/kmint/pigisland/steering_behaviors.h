@@ -25,7 +25,7 @@ namespace pigisland {
 			double wanderJitter = 1.0;
 			std::vector<Wall2D> walls_;
 		public:
-			SteeringBehaviors() = default;
+			SteeringBehaviors();
 
 			kmint::math::vector2d wander(pig& m_pig_);
 			kmint::math::vector2d seek(kmint::math::vector2d target, pig& m_pig_);
