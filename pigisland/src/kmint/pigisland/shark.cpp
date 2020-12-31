@@ -14,9 +14,7 @@
 namespace kmint {
 namespace pigisland {
 shark::shark(map::map_graph &g, map::map_node &initial_node)
-    : play::map_bound_actor{initial_node}, drawable_{*this,
-                                                     graphics::image{
-                                                         shark_image()}}
+    : play::map_bound_actor{initial_node}, drawable_{*this, graphics::image{shark_image()}}
 {
 	m_pStateMachine_ = std::unique_ptr<states::StateMachine>(new states::StateMachine(*this));
 
@@ -71,8 +69,6 @@ void shark::moveToNextNode(int next_index) {
 
 void shark::resetTired() {
 	tired_ = 0;
-
-	//TODO RESET PIG POPULATION
 }
 
 void shark::set4TurnsToWait() {
@@ -83,8 +79,7 @@ void shark::removeTurnsToWaitByOne() {
 	turns_to_wait_--;
 }
 
-void shark::setColor(std::uint8_t r, std::uint8_t g, std::uint8_t b)
-{
+void shark::setColor(std::uint8_t r, std::uint8_t g, std::uint8_t b) {
 	graphics::color color{ r, g, b };
 	drawable_.set_tint(color);
 }

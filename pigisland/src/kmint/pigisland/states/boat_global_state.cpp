@@ -33,8 +33,10 @@ namespace kmint
 					auto &other = m_boat_.colliding_actor(ix);
 					if (dynamic_cast<pig *>(&other))
 					{
+						auto* savedPig = dynamic_cast<pigisland::pig *>(&other);
 						std::cout << "A pig safely climbed onto the boat \n";
-						other.remove();
+						m_boat_.getMemory()->savePigChromosomes(savedPig->getChromosomes());
+						savedPig->remove();
 					}
 				}
 			}

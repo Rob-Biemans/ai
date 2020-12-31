@@ -9,17 +9,41 @@ namespace pigisland {
 
 		  auto locs = pigisland::random_pig_locations(100);
 		  for (auto loc : locs) {
-			  stage_->build_actor<pigisland::pig>(loc, Attributes{}, shark, boat);
+			  stage_->build_actor<pigisland::pig>(loc, Chromosomes{}, shark, boat);
 		  }
 	}
 
 	void GeneticalAlgorithm::createNewGeneration(boat & boat, shark & shark) {
-		//TODO
 
-		// get surviving pigs
-		// use suriving pigs to collection and create new to reach 100
+		int totalLeftoverPigs = boat.getMemory()->getSavedPigChromosomes().size();
 
-		// use boat and shark to create new both from previous experience
+		if (totalLeftoverPigs == 0) {
+			createFirstGeneration(boat, shark);
+			return;
+		}
+
+		// week4 sheet 14
+		// The higher the overall fitness of a pig, the higher chance to be picked as parent
+		std::vector<float> overallFitnessOfEachPig;
+		float averageFitness = 0;
+
+		for (Chromosomes x : boat.getMemory()->getSavedPigChromosomes())
+		{
+			// https://en.wikipedia.org/wiki/Fitness_proportionate_selection
+			float score = x.calculateFitness();
+			overallFitnessOfEachPig.push_back(score);
+			averageFitness += score;
+		}
+
+		// required for parent pairs and determine worst Chromosomes
+		averageFitness = averageFitness / overallFitnessOfEachPig.size();
+
+		// Crossover
+
+		// Mutation
+
+		// Uitdunnen
+
 	}
 
 }

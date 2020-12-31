@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "steering_behaviors.h"
-#include "attributes.hpp"
+#include "chromosomes.hpp"
 
 #include "shark.hpp"
 #include "boat.hpp"
@@ -17,7 +17,7 @@ namespace pigisland {
 
 class pig : public play::free_roaming_actor {
 public:
-  pig(math::vector2d location, Attributes attributes, pigisland::shark& shark, pigisland::boat& boat);
+  pig(math::vector2d location, Chromosomes chromosomes, pigisland::shark& shark, pigisland::boat& boat);
   const ui::drawable &drawable() const override { return drawable_; }
   // participates in collisions
   bool incorporeal() const override { return false; }
@@ -37,7 +37,7 @@ public:
   bool isTagged() const { return isTagged_; }
   math::vector2d velocity() const { return v_; }
 
-  Attributes& getAttributes() { return attributes_; }
+  Chromosomes& getChromosomes() { return chromosomes_; }
 
 private:
   play::image_drawable drawable_;
@@ -51,7 +51,7 @@ private:
   float maxTurnRate_ = 100;
   bool isTagged_ = false;
 
-  Attributes attributes_;
+  Chromosomes chromosomes_;
   shark& shark;
   boat& boat;
 };

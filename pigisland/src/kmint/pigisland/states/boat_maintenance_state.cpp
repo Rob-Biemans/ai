@@ -14,6 +14,8 @@ namespace kmint
 			{
 				std::cout << "BoatMaintenanceState::Enter()" << std::endl;
 
+				setDockNumber(random_int(0, 3));
+
 				//TODO dock based on % and learning
 				selected_maintenance_dock_ = m_boat_.getMaintenancesPlaces()[dockNumber].node;
 
@@ -34,9 +36,12 @@ namespace kmint
 							found_index = i;
 						}
 					}
-					m_boat_.moveToNextNode(found_index);
 
-					path_maintenance_dock_.pop();
+					if (m_boat_.getTurnsToWait() <= 0) {
+						path_maintenance_dock_.pop();
+					}
+
+					m_boat_.moveToNextNode(found_index);
 				}
 				else
 				{
@@ -47,10 +52,18 @@ namespace kmint
 			void BoatMaintenanceState::Exit()
 			{
 				std::cout << "BoatMaintenanceState::Exit()" << std::endl;
-				//TODO repairDamage based on %
-				int repairedFor = random_int(0, 50);
 
-				m_boat_.repairDamage(dockNumber, 50);
+				Dock dock = m_boat_.getMaintenancesPlaces()[dockNumber];
+
+				int repairedFor = 0;
+				if (dock.min == dock.max) {
+					repairedFor = 50;
+				}
+				else {
+					repairedFor = random_int(dock.min, dock.max);
+				}
+
+				m_boat_.repairDamage(dock.id, repairedFor);
 				a_star_.untag_nodes();
 			}
 

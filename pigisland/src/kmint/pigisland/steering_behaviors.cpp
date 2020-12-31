@@ -179,18 +179,18 @@ namespace pigisland {
 
 		steeringForce += wander(m_pig_) * 8;
 
-		force = separation(neighbors, m_pig_) * 0.8 *m_pig_.getAttributes().getValues()[3];
+		force = separation(neighbors, m_pig_) * 0.65 *m_pig_.getChromosomes().getValues()[3];
 		accumulateForce(m_pig_, steeringForce, force);
-		force = alignment(neighbors, m_pig_) * 0.5 * m_pig_.getAttributes().getValues()[4];
+		force = alignment(neighbors, m_pig_) * 0.5 * m_pig_.getChromosomes().getValues()[4];
 		accumulateForce(m_pig_, steeringForce, force);
-		force = cohesion(neighbors, m_pig_) * 0.4 * m_pig_.getAttributes().getValues()[2];
+		force = cohesion(neighbors, m_pig_) * 0.4 * m_pig_.getChromosomes().getValues()[2];
 		accumulateForce(m_pig_, steeringForce, force);
 
 		force = wallAvoidance(m_pig_) * 1000;
 		accumulateForce(m_pig_, steeringForce, force);
-		force = seek(boatLocation, m_pig_) * 0.25 * m_pig_.getAttributes().getValues()[1];
+		force = seek(boatLocation, m_pig_) * 0.25 * m_pig_.getChromosomes().getValues()[1];
 		accumulateForce(m_pig_, steeringForce, force);
-		force = flee(sharkLocation, m_pig_) * 0.9 * m_pig_.getAttributes().getValues()[0];
+		force = flee(sharkLocation, m_pig_) * 0.9 * m_pig_.getChromosomes().getValues()[0];
 		accumulateForce(m_pig_, steeringForce, force);
 
 		return steeringForce;
@@ -273,7 +273,7 @@ namespace pigisland {
 	}
 
 	void SteeringBehaviors::calcWalls() {
-		//1024, 768
+		// 1024, 768
 		std::vector<Wall2D> walls;
 		math::vector2d A = math::vector2d(0, 0);
 		math::vector2d B = math::vector2d(0, 0);
@@ -299,7 +299,8 @@ namespace pigisland {
 		Wall2D west = Wall2D(A, B);
 		walls.push_back(west);
 
-		//Island NW
+		// Islands
+		// NW
 		A = math::vector2d(255, 549);
 		B = math::vector2d(0, 514);
 		Wall2D nwS = Wall2D(A, B);
@@ -310,7 +311,7 @@ namespace pigisland {
 		Wall2D nwE = Wall2D(A, B);
 		walls.push_back(nwE);
 
-		//Island NE
+		// NE
 		A = math::vector2d(1024, 549);
 		B = math::vector2d(769, 549);
 		Wall2D neS = Wall2D(A, B);
@@ -321,7 +322,7 @@ namespace pigisland {
 		Wall2D neW = Wall2D(A, B);
 		walls.push_back(neW);
 
-		//Island SE
+		// SE
 		A = math::vector2d(769, 219);
 		B = math::vector2d(1024, 219);
 		Wall2D seN = Wall2D(A, B);
@@ -332,7 +333,7 @@ namespace pigisland {
 		Wall2D seW = Wall2D(A, B);
 		walls.push_back(seW);
 
-		//Island SW
+		// SW
 		A = math::vector2d(0, 219);
 		B = math::vector2d(305, 219);
 		Wall2D swN = Wall2D(A, B);

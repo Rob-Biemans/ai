@@ -6,6 +6,7 @@
 #include "kmint/primitives.hpp"
 
 #include "kmint/pigisland/states/state_machine.h"
+#include "kmint/pigisland/memory.h"
 
 namespace kmint {
 namespace pigisland {
@@ -19,7 +20,7 @@ struct Dock {
 
 class boat : public play::map_bound_actor {
 public:
-	boat(map::map_graph& g, map::map_node& initial_node);
+	boat(map::map_graph& g, map::map_node& initial_node, Memory& memory);
 	// wordt elke game tick aangeroepen
 	void act(delta_time dt) override;
 	ui::drawable const& drawable() const override { return drawable_; }
@@ -48,6 +49,7 @@ public:
 	void findAndStoreMaintenancePlaces();
 
 	std::vector<Dock> getMaintenancesPlaces() { return maintenances_places_; }
+	Memory* getMemory() { return memory_; }
 	
 private:
 	// hoeveel tijd is verstreken sinds de laatste beweging
@@ -61,6 +63,8 @@ private:
 
 	std::vector<Dock> maintenances_places_{};
 	map::map_graph& graph_;
+
+	Memory* memory_;
 };
 
 } // namespace pigisland

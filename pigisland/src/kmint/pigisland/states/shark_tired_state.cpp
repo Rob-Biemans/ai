@@ -33,9 +33,12 @@ namespace kmint
 							found_index = i;
 						}
 					}
-					m_shark_.moveToNextNode(found_index);
 
-					path_to_resting_place_.pop();
+					if (m_shark_.getTurnsToWait() <= 0) {
+						path_to_resting_place_.pop();
+					}
+
+					m_shark_.moveToNextNode(found_index);
 				}
 				else
 				{
@@ -48,6 +51,7 @@ namespace kmint
 			{
 				std::cout << "SharkTiredState::Exit()" << std::endl;
 				m_shark_.resetTired();
+				m_shark_.setRested();
 				a_star_.untag_nodes();
 			}
 

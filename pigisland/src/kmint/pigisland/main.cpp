@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "kmint/pigisland/genetical_algorithm.h"
+#include "kmint/pigisland/memory.h"
 
 using namespace kmint;
 
@@ -28,29 +29,30 @@ int main() {
   // maak een podium aan
   play::stage s{{1024, 768}};
 
+  pigisland::GeneticalAlgorithm geneticalAlgorithm{ s };
+  pigisland::Memory memory{};
+
   auto map = pigisland::map();
   auto &graph = map.graph();
   s.build_actor<play::background>(math::size(1024, 768),
                                   graphics::image{map.background_image()});
   s.build_actor<play::map_actor>(math::vector2d{0.f, 0.f}, map.graph());
-  pigisland::boat & boat = s.build_actor<pigisland::boat>(graph, pigisland::find_node_of_kind(graph, '1'));
+  pigisland::boat & boat = s.build_actor<pigisland::boat>(graph, pigisland::find_node_of_kind(graph, '1'), memory);
   pigisland::shark & shark = s.build_actor<pigisland::shark>(graph, pigisland::find_node_of_kind(graph, 'K'));
-
-  bool roundHasEnded = false;
-  pigisland::GeneticalAlgorithm geneticalAlgorithm{ s };
 
   // Maak een event_source aan (hieruit kun je alle events halen, zoals
   // toetsaanslagen)
   ui::events::event_source event_source{};
 
   geneticalAlgorithm.createFirstGeneration(boat, shark);
+  memory.increaseRound();
 
   // main_loop stuurt alle actors aan.
   main_loop(s, window, [&](delta_time dt, loop_controls &ctl) {
 
-	 if (roundHasEnded)
+	 if (shark.hasRested())
 	 {
-		 roundHasEnded = false;
+		 shark.resetRested();
 		 geneticalAlgorithm.createNewGeneration(boat, shark);
 	 }
 

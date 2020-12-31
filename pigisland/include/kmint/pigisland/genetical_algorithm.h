@@ -4,6 +4,7 @@
 #include "shark.hpp"
 #include "boat.hpp"
 #include "pig.hpp"
+#include "chromosomes.hpp"
 
 namespace kmint
 {
@@ -18,6 +19,7 @@ namespace kmint
 			void createNewGeneration(boat & boat, shark & shark);
 		private:
 			play::stage * stage_;
+			Chromosomes * chromosomes_;
 			std::vector<pig *> pigs = std::vector<pig *>();
 		};
 	}

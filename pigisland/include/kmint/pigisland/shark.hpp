@@ -6,6 +6,7 @@
 #include "kmint/primitives.hpp"
 
 #include "kmint/pigisland/states/state_machine.h"
+#include "kmint/pigisland/memory.h"
 
 namespace kmint {
 namespace pigisland {
@@ -52,6 +53,10 @@ public:
 
   void setColor(std::uint8_t r, std::uint8_t g, std::uint8_t b);
   void removeColor();
+
+  void setRested() { rested_ = true; }
+  bool hasRested() { return rested_; }
+  void resetRested() { rested_ = false; }
 private:
   // hoeveel tijd is verstreken sinds de laatste beweging
   delta_time t_passed_{};
@@ -65,6 +70,7 @@ private:
   int tired_ = 0;
   int turns_to_wait_ = 0;
   int turns_to_wander_ = 0;
+  bool rested_ = false;
 };
 
 } // namespace pigisland

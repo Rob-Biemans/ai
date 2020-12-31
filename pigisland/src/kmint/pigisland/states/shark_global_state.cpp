@@ -33,7 +33,7 @@ namespace kmint
 
 					if (dynamic_cast<boat *>(&a) && !m_shark_.getFSM().isInState("SharkAfraidState")) 
 					{
-						if (math::distance(m_shark_.location(), a.location()) <= 500) 
+						if (math::distance(m_shark_.location(), a.location()) <= 50) 
 						{
 							std::cout << "Noticed a boat at " << a.location().x() << ", " << a.location().y() << "\n";
 							m_shark_.getFSM().ChangeState(new SharkAfraidState(graph_, m_shark_));

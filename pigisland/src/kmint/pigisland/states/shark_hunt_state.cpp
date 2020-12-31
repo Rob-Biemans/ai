@@ -43,9 +43,12 @@ namespace kmint
 							found_index = i;
 						}
 					}
-					m_shark_.moveToNextNode(found_index);
 
-					path_to_pig_.pop();
+					if (m_shark_.getTurnsToWait() <= 0) {
+						path_to_pig_.pop();
+					}
+
+					m_shark_.moveToNextNode(found_index);
 				}
 				else
 				{
