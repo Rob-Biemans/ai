@@ -25,6 +25,10 @@ namespace kmint
 
 				void setDockNumber(int value) { dockNumber = value; }
 				int dockNumber = 0;
+				std::vector<RepairHistory> repairHistory;
+				int dock1 = 0;
+				int dock2 = 0;
+				int dock3 = 0;
 			protected:
 				boat & m_boat_;
 			};

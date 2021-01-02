@@ -33,6 +33,10 @@ namespace kmint
 			maintenances_places_chance_.push_back(chance);
 		}
 
+		void Memory::updateMaintenancePlaceChance(int dockNumber, int chance) {
+			maintenances_places_chance_.at(dockNumber) = chance;
+		}
+
 		void Memory::savePigChromosomes(Chromosomes chromosomes) {
 			pig_chromosomes_.push_back(chromosomes);
 			increaseSaved();
@@ -40,6 +44,14 @@ namespace kmint
 
 		std::vector<Chromosomes> Memory::getSavedPigChromosomes() {
 			return pig_chromosomes_;
+		}
+
+		void Memory::saveBoatRepairHistory(RepairHistory history) {
+			boat_repair_history_.push_back(history);
+		}
+
+		std::vector<RepairHistory> Memory::getAllBoatRepairHistory() {
+			return boat_repair_history_;
 		}
 	}
 }

@@ -34,6 +34,8 @@ namespace pigisland {
 	  damaged_ -= value;
 
 	  std::cout << "Repaired for " << value << " at dock number " << dock;
+
+	  memory_->saveBoatRepairHistory({dock, value});
   }
 
   void boat::goToNextRandomNode() {
