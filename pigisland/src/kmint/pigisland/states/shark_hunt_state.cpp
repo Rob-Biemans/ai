@@ -14,6 +14,9 @@ namespace kmint
 		{
 			void SharkHuntState::Enter()
 			{
+				// Turns red
+				m_shark_.setColor(245, 66, 66);
+
 				std::cout << "SharkHuntState::Enter()" << std::endl;
 
 				auto &a = *last_smelled_pig_;
@@ -58,6 +61,7 @@ namespace kmint
 
 			void SharkHuntState::Exit()
 			{
+				m_shark_.removeColor();
 				std::cout << "SharkHuntState::Exit()" << std::endl;
 				a_star_.untag_nodes();
 			}

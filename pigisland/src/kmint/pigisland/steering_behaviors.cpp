@@ -188,7 +188,7 @@ namespace pigisland {
 
 		force = wallAvoidance(m_pig_) * 1000;
 		accumulateForce(m_pig_, steeringForce, force);
-		force = seek(boatLocation, m_pig_) * 0.25 * m_pig_.getChromosomes().getValues()[1];
+		force = seek(boatLocation, m_pig_) * 0.15 * m_pig_.getChromosomes().getValues()[1];
 		accumulateForce(m_pig_, steeringForce, force);
 		force = flee(sharkLocation, m_pig_) * 0.9 * m_pig_.getChromosomes().getValues()[0];
 		accumulateForce(m_pig_, steeringForce, force);

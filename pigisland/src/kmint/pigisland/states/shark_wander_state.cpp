@@ -14,6 +14,9 @@ namespace kmint
 		{
 			void SharkWanderState::Enter()
 			{
+				// Turns green
+				m_shark_.setColor(66, 245, 69);
+
 				//std::cout << "SharkWanderState::Enter()" << std::endl;
 				m_shark_.empty_perceived();
 			}
@@ -37,6 +40,7 @@ namespace kmint
 
 			void SharkWanderState::Exit()
 			{
+				m_shark_.removeColor();
 				//std::cout << "SharkWanderState::Exit()" << std::endl;
 			}
 

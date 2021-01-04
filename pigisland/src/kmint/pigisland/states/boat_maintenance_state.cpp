@@ -12,6 +12,9 @@ namespace kmint
 		{
 			void BoatMaintenanceState::Enter()
 			{
+				// Black
+				m_boat_.setColor(1, 1, 1);
+
 				std::cout << "BoatMaintenanceState::Enter()" << std::endl;
 
 				repairHistory = m_boat_.getMemory()->getAllBoatRepairHistory();
@@ -71,6 +74,7 @@ namespace kmint
 
 			void BoatMaintenanceState::Exit()
 			{
+				m_boat_.removeColor();
 				std::cout << "BoatMaintenanceState::Exit()" << std::endl;
 
 				Dock dock = m_boat_.getMaintenancesPlaces()[dockNumber];

@@ -54,6 +54,7 @@ int main() {
 	 {
 		 shark.resetRested();
 		 geneticalAlgorithm.createNewGeneration(boat, shark);
+		 memory.increaseRound();
 	 }
 
     // gebruik dt om te kijken hoeveel tijd versterken is

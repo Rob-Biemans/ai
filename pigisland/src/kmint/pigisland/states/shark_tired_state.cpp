@@ -13,6 +13,9 @@ namespace kmint
 		{
 			void SharkTiredState::Enter()
 			{
+				// Turns blue
+				m_shark_.setColor(66, 182, 245);
+
 				std::cout << "SharkTiredState::Enter()" << std::endl;
 
 				m_shark_.empty_perceived();
@@ -49,6 +52,7 @@ namespace kmint
 
 			void SharkTiredState::Exit()
 			{
+				m_shark_.removeColor();
 				std::cout << "SharkTiredState::Exit()" << std::endl;
 				m_shark_.resetTired();
 				m_shark_.setRested();

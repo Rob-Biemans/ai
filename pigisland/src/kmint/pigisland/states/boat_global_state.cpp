@@ -11,7 +11,7 @@ namespace kmint
 		{
 			void BoatGlobalState::Enter()
 			{
-
+				
 			}
 
 			void BoatGlobalState::Execute()
