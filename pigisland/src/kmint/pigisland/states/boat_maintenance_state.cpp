@@ -19,9 +19,9 @@ namespace kmint
 
 				repairHistory = m_boat_.getMemory()->getAllBoatRepairHistory();
 
-				int dock1 = m_boat_.getMemory()->getMaintenancePlaceChance(0);
-				int dock2 = m_boat_.getMemory()->getMaintenancePlaceChance(1);
-				int dock3 = m_boat_.getMemory()->getMaintenancePlaceChance(2);
+				int dock1Chance = m_boat_.getMemory()->getMaintenancePlaceChance(0);
+				int dock2Chance = m_boat_.getMemory()->getMaintenancePlaceChance(1);
+				int dock3Chance = m_boat_.getMemory()->getMaintenancePlaceChance(2);
 
 				int randomDockNumber;
 				int val = (rand() % 100);
@@ -29,10 +29,10 @@ namespace kmint
 					setDockNumber(random_int(0, 3));
 				}
 				else {
-					if (val < dock1) {
+					if (val < dock1Chance) {
 						setDockNumber(0);
 					}
-					else if (val < dock2) {
+					else if (val < dock2Chance) {
 						setDockNumber(1);
 					}
 					else {

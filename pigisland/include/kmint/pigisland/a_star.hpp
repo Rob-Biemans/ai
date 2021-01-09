@@ -13,7 +13,7 @@ namespace kmint::pigisland {
 
 		std::queue<const map::map_node*> reconstruct_path(const map::map_node* source, const map::map_node* target, std::map<const map::map_node*, const map::map_node*> from_source);
 
-		double heuristic(const map::map_node& source, const map::map_node& target) const;
+		float heuristic(float weight, const map::map_node& source, const map::map_node& target) const;
 	public:
 		a_star(map::map_graph& graph) : graph_(graph)
 		{

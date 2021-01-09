@@ -28,11 +28,13 @@ namespace kmint {
 
 				for (size_t i = 0; i < current.num_edges(); i++)
 				{
-					// Check weight
-					const float weight = current[i].weight();
-					const double new_cost = cost_so_far[&current] + weight;
+
 					const kmint::map::map_node& neighbor = current[i].to();
 
+					// Check weight of neighbor
+					const float weight = current[i].weight();
+					const double new_cost = cost_so_far[&current] + weight;
+					
 					// Visited the nodes during check
 					graph_[neighbor.node_id()].tag(kmint::graph::node_tag::visited);
 					untag_queue_.push(&neighbor);
@@ -41,9 +43,14 @@ namespace kmint {
 					if (cost_so_far.find(&neighbor) == cost_so_far.end()
 						|| new_cost < cost_so_far[&neighbor])
 					{
+						// (G Cost from origin to neighbor node)
 						cost_so_far[&neighbor] = new_cost;
-						const double priority = new_cost + heuristic(neighbor, target);
-						queue.put(&neighbor, priority);
+						// (Heuristic cost)
+						const double HCost = heuristic(weight, neighbor, target);
+
+						// F = G + H
+						const double f = new_cost + HCost;
+						queue.put(&neighbor, f);
 						source_from[&neighbor] = &current;
 					}
 				}
@@ -93,14 +100,14 @@ namespace kmint {
 			return path;
 		}
 
-		//http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
+		// http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
 		// Manhatten distance
-		double a_star::heuristic(const kmint::map::map_node& a, const kmint::map::map_node& b) const
+		float a_star::heuristic(float weight, const kmint::map::map_node& a, const kmint::map::map_node& b) const
 		{
 			float dx = std::abs(a.location().x() - b.location().x());
 			float dy = std::abs(a.location().y() - b.location().y());
 
-			return 1 * (dx + dy);
+			return (weight + 1) * (dx + dy);
 		}
 
 	}
