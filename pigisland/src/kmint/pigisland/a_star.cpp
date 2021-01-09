@@ -33,24 +33,21 @@ namespace kmint {
 
 					// Check weight of neighbor
 					const float weight = current[i].weight();
-					const double new_cost = cost_so_far[&current] + weight;
-					
+					const double gCost = cost_so_far[&current] + weight;
+					const double hCost = heuristic(weight, neighbor, target);
+					const double fCost = gCost + hCost;
+
 					// Visited the nodes during check
 					graph_[neighbor.node_id()].tag(kmint::graph::node_tag::visited);
 					untag_queue_.push(&neighbor);
 
 					// Calc cost
 					if (cost_so_far.find(&neighbor) == cost_so_far.end()
-						|| new_cost < cost_so_far[&neighbor])
+						|| fCost < cost_so_far[&neighbor])
 					{
 						// (G Cost from origin to neighbor node)
-						cost_so_far[&neighbor] = new_cost;
-						// (Heuristic cost)
-						const double HCost = heuristic(weight, neighbor, target);
-
-						// F = G + H
-						const double f = new_cost + HCost;
-						queue.put(&neighbor, f);
+						cost_so_far[&neighbor] = fCost;
+						queue.put(&neighbor, fCost);
 						source_from[&neighbor] = &current;
 					}
 				}

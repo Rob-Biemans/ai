@@ -2,7 +2,7 @@
 #include "../shark.hpp"
 #include "kmint/pigisland/a_star.hpp"
 
-namespace kmint 
+namespace kmint
 {
 	namespace pigisland
 	{

@@ -41,7 +41,7 @@ namespace kmint
 					std::size_t id = path_to_pig_.front()->node_id();
 					int found_index = 0;
 					for (std::size_t i = 0; i < m_shark_.node().num_edges(); ++i) {
-						if (m_shark_.node()[i].to().node_id() == id) 
+						if (m_shark_.node()[i].to().node_id() == id)
 						{
 							found_index = i;
 						}
