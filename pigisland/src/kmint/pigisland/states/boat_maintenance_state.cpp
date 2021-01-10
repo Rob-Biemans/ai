@@ -30,13 +30,13 @@ namespace kmint
 				}
 				else {
 					if (val < dock1Chance) {
-						setDockNumber(0);
-					}
-					else if (val < dock2Chance) {
 						setDockNumber(1);
 					}
-					else {
+					else if (val < dock2Chance) {
 						setDockNumber(2);
+					}
+					else {
+						setDockNumber(0);
 					}
 				}
 

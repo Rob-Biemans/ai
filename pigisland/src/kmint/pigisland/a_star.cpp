@@ -104,7 +104,7 @@ namespace kmint {
 			float dx = std::abs(a.location().x() - b.location().x());
 			float dy = std::abs(a.location().y() - b.location().y());
 
-			return (weight + 1) * (dx + dy);
+			return weight * (dx + dy);
 		}
 
 	}
