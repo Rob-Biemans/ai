@@ -14,6 +14,8 @@ namespace kmint
 			void SharkAfraidState::Enter()
 			{
 				std::cout << "SharkAfraidState::Enter()" << std::endl;
+				// Yellow
+				m_shark_.setColor(245, 242, 66);
 				m_shark_.set10ForcedTurnsToWander();
 			}
 
@@ -27,6 +29,7 @@ namespace kmint
 			void SharkAfraidState::Exit()
 			{
 				std::cout << "SharkAfraidState::Exit()" << std::endl;
+				m_shark_.removeColor();
 			}
 
 			std::string SharkAfraidState::Name() {

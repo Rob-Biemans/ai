@@ -1,0 +1,24 @@
+Geachte heer/mevrouw,
+
+
+Vandaag op 13 Januari 2021, om 16:00 heb ik een afspraak met meneer Jeroen de Haas om mijn assessment van KMINT te beoordelen.  
+
+Waarbij Jeroen zelf immers pas om 16:09 verschijnt bij de ‘Teams meeting’. Jeroen vraagt of ik mijn webcam kan aanzetten om te controleren of ik alleen ben in mijn kamer, waarbij ik aangaf op mijn werk desktop zit en geen webcam heb - aangezien ik afgelopen jaar al afgestudeerd heb en nu fulltime aan het werk ben. Maar gaf aan dat ik wel mijn laptop even erbij kan pakken, waarbij Jeroen zegt dat het niet nodig is maar kiest om snel met het assessment te beginnen.  
+
+Vervolgens vraagt Jeroen of ik het programma wil starten en er doorheen wil lopen, tijdens mijn uitleg vertel ik onder andere; Hoe in dit geval het bootje (Porcus Vincit) het kortste pad zoekt naar het doel met behulp van de A* zoekalgoritme en hoe ik dit heb gedaan d.m.v. een Heuristiek die kijkt naar de 'movement cost/weight' en het richtingsgevoel geeft door de gemaakt functie. 
+
+Terwijl ik het stapsgewijs uitleg, vraagt Jeroen om hem door de code te wijzen en vervolg ik mijn uitleg. Daarbij vertel ik de reden waarom de gekozen 'Manhatten distance' admissble is en daarna vraagt Jeroen of ik even een moment heb. Nadat Jeroen terug keert vervolgen wij het assessment weer en gaan we verder met de A* zoekalgoritme, waarbij Jeroen vraagt of ik meer wil laten zien van die algoritme. 
+
+Op dat moment leg ik de code stapsgewijs uit en zegt op een gegeven moment Jeroen dat we even stoppen en van scherm wisselen, daarbij deelt hij zijn eigen scherm en vergelijkt mijn code met een andere code waarbij de A* ook te zien is en vergelijkt dit met elkaar en komt tot de conclusie dat het grotendeels op elkaar lijkt. 
+
+Dan twijfelt Jeroen of ik plagiaat heb gepleegd want hij herkent de A* algoritme waar ik geen verwijzing bij heb gezet naar toe (Hij had over een ‘library’?). Ik leg Jeroen uit dat dit dezelfde code is wat ik destijds in 7 Januari 2019 (eerste keer dit vak) had en ook bij het vorige KMINT assessment moment. 
+
+Waarbij Jeroen zegt dat hij plagiaat vermoed, want heeft dit vaker voorbij zien komen en dit gaat voordragen aan de examencommissie tot een besluit, waarbij ik aangaf dat ik dit prima kan verklaren en kan laten zien dmv Github waar mijn broncode gewoon staat van destijds. Maar Jeroen geeft daar geen gehoor aan, want hij verklaard dat hij hier geen tijd voor heeft en besluit hier niet op in te gaan.  
+
+
+---
+Ik ben teleurgesteld in het feit dat ik alleen hard aan de eindopdracht heb gewerkt en onterecht wordt beschuldigd, en vervolgens geen kans te krijgen door tijd gebrek om mezelf te verdedigen door middel van mijn Github account dit omdat Jeroen 9 minuten te laat kwam.
+
+Met vriendelijke groet,
+Rob Biemans
+Studentennummer 2108369
